@@ -1,0 +1,939 @@
+{% load static %}
+
+{% load mathfilters %}
+
+<!doctype html>
+<html lang="en">
+    <head>
+        <!-- GOOGLE TRACKING SETUP -->
+
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-K0KGN7KVT8"></script>
+        <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-K0KGN7KVT8');
+        </script>
+
+
+        <meta charset="utf-8">
+        <title>Find black owned businesses around you</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Find Black Owned businesses around New York">
+        <link rel="icon" type="image/png" href="{% static 'img/logo2.png' %}"/>
+        <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" type="text/css" media="all" />
+        <link href="{% static 'css/stack-interface.css' %}" rel="stylesheet" type="text/css" media="all" />
+        <link href="{% static 'css/socicon.css' %}" rel="stylesheet" type="text/css" media="all" />
+        <link href="{% static 'css/lightbox.min.css' %}" rel="stylesheet" type="text/css" media="all" />
+        <link href="{% static 'css/flickity.css' %}" rel="stylesheet" type="text/css" media="all" />
+        <link href="{% static 'css/iconsmind.css' %}" rel="stylesheet" type="text/css" media="all" />
+        <link href="{% static 'css/jquery.steps.css' %}" rel="stylesheet" type="text/css" media="all" />
+        <link href="{% static 'css/theme.css' %}" rel="stylesheet" type="text/css" media="all" />
+        <link href="{% static 'css/custom.css' %}" rel="stylesheet" type="text/css" media="all" />
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+        
+        <!-- <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script> -->
+        <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAqkwYqdr51nm3-ILj_Wtd3r8QhsVt7d5E&callback=initMap&libraries=&v=weekly"
+        defer
+        ></script>
+        <script src="https://unpkg.com/@mapbox/mapbox-sdk/umd/mapbox-sdk.min.js"></script>
+
+        <style type="text/css">
+            .boxed:not([class*='bg-']) {
+                background-color: white!important;
+                height: 155px;
+                border-radius: 0px 0px 6px 6px!important;
+            }
+        </style>
+
+        
+        <!-- Facebook Pixel Code -->
+        <script>
+            !function(f,b,e,v,n,t,s)
+            {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+            n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+            if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+            n.queue=[];t=b.createElement(e);t.async=!0;
+            t.src=v;s=b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t,s)}(window, document,'script',
+            'https://connect.facebook.net/en_US/fbevents.js');
+            fbq('init', '160891119314064');
+            fbq('track', 'PageView');
+            </script>
+            <noscript><img height="1" width="1" style="display:none"
+            src="https://www.facebook.com/tr?id=160891119314064&ev=PageView&noscript=1"
+            /></noscript>
+            <!-- End Facebook Pixel Code -->
+
+    </head>
+    <body class=" " data-smooth-scroll-offset='180'>
+        <div id="start"></div>
+        <!-- <div id="preloader">
+            <div class="medica-load"></div>
+            <img src="{% static 'img/logo2.png' %}" alt="logo">
+        </div>
+ -->
+        <div id="preloader">
+            <div class="medica-load"></div>
+            <img src="{% static 'img/logo2.png' %}" alt="logo">
+        </div>
+
+        <div class="nav-container ">
+            <div class="bar bar--sm visible-xs visible-sm">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-4 col-md-2">
+                            <a href="/">
+                                <img class="logo logo-dark" alt="logo" src="{% static 'img/logo2.png' %}" />
+                                <img class="logo logo-light" alt="logo" src="{% static 'img/logo2.png' %}" />
+                            </a>
+                            <span style="padding-left: 10px;" class="beta-tag-sm">
+                                BETA
+                            </span>
+                        </div>
+                        <div class="col-8 col-md-10 text-right">
+                            <a href="#" class="hamburger-toggle" data-toggle-class="#menu2;hidden-xs">
+                                <i class="icon icon--sm stack-interface stack-menu"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <!--end of row-->
+                </div>
+                <!--end of container-->
+            </div>
+            <!--end bar-->
+            <nav id="menu2" class="bar bar-2 hidden-xs hidden-sm bar--transparent bar--absolute" data-scroll-class='90vh:pos-fixed'>
+                <div class="container_2">
+                    <div class="row">
+                        <div class="col-md-2 col-lg-2 text-center text-left-sm hidden-xs">
+                            <div class="bar__module">
+                                <a href="/">
+                                    <img class="logo logo-dark" alt="logo" src="{% static 'img/logo2.png' %}" />
+                                    <img class="logo logo-light" alt="logo" src="{% static 'img/logo2.png' %}" />
+                                </a>
+                                <span style="padding-left: 10px;" class="beta-tag-md">
+                                    BETA
+                                </span>
+                            </div>
+                            <!--end module-->
+                        </div>
+                        <div class="col-md-6 col-lg-6 text-right">
+                            <div class="bar__module">
+                                <ul class="menu-horizontal text-left">
+                                    <li class="dropdown">
+                                        <span class="dropdown__trigger">Categories</span>
+                                        <div class="dropdown__container">
+                                            <div class="container">
+                                                <div class="row">
+                                                    <div class="dropdown__content col-lg-4 col-md-4">
+                                                        <ul class="menu-vertical">
+                                                            <li class="dropdown">
+                                                                <a href="categories/clothing">
+                                                                    <span class="dropdown__trigger">Clothing</span>
+                                                                </a>
+                                                            </li>
+                                                            <li class="dropdown">
+                                                                <a href="categories/accessories">
+                                                                    <span class="dropdown__trigger">Accessories</span>
+                                                                </a>
+                                                            </li>
+                                                            <li class="dropdown">
+                                                                <a href="categories/restaurants">
+                                                                    <span class="dropdown__trigger">Restaurants</span>
+                                                                </a>
+                                                            </li>
+                                                            <li class="dropdown">
+                                                                <a href="categories/clubs_bars_lounges">
+                                                                    <span class="dropdown__trigger">Clubs/Bars/Lounges</span>
+                                                                </a>
+                                                            </li>
+                                                            <li class="dropdown">
+                                                                <a href="categories/beauty_services">
+                                                                    <span class="dropdown__trigger">Beauty Services, Salons & Barbers</span>
+                                                                </a>
+                                                            </li>
+                                                            <li class="dropdown">
+                                                                <a href="categories/beauty_services">
+                                                                    <span class="dropdown__trigger">Beauty Supplies</span>
+                                                                </a>
+                                                            </li>
+                                                            <li class="dropdown">
+                                                                <a href="categories/home_cleaning">
+                                                                    <span class="dropdown__trigger">Home & Cleaning Services</span>
+                                                                </a>
+                                                            </li>
+                                                            <li class="dropdown">
+                                                                <a href="categories/professional_services">
+                                                                    <span class="dropdown__trigger">Professional Services</span>
+                                                                </a>
+                                                            </li>
+                                                            <li class="dropdown">
+                                                                <a href="categories/construction_services">
+                                                                    <span class="dropdown__trigger">Construction & Auto Services</span>
+                                                                </a>
+                                                            </li>
+                                                            <li class="dropdown">
+                                                                <a href="categories/coffee_tea_joints">
+                                                                    <span class="dropdown__trigger">Coffee and Tea</span>
+                                                                </a>
+                                                            </li>
+                                                            <li class="dropdown">
+                                                                <a href="categories/grocery_store">
+                                                                    <span class="dropdown__trigger">Grocery Store</span>
+                                                                </a>
+                                                            </li>
+                                                            <li class="dropdown">
+                                                                <a href="categories/childcare">
+                                                                    <span class="dropdown__trigger">Childcare</span>
+                                                                </a>
+                                                            </li>
+                                                            <li class="dropdown">
+                                                                <a href="categories/health_and_wellness">
+                                                                    <span class="dropdown__trigger">Health & Wellness</span>
+                                                                </a>
+                                                            </li>
+
+                                                            <li class="dropdown">
+                                                                <a href="categories/other">
+                                                                    <span class="dropdown__trigger">Other</span>
+                                                                </a>
+                                                            </li>
+
+                                                        </ul>
+                                                    </div>
+                                                    <!--end dropdown content-->
+                                                </div>
+                                                <!--end row-->
+                                            </div>
+                                        </div>
+                                        <!--end dropdown container-->
+                                    </li>
+                                    <li>
+                                        <a target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLSfcqaBwFLEulg2sSspDGScfh4z2ZhMKvjA2OtrjDl1eKEQI9A/viewform">
+                                            <span>Join</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLScNrBzv6UEHi1c7Hj0gNIVF7obiEQnO-kAp9KktkEpabI0SnQ/viewform?vc=0&c=0&w=1&flr=0&gxids=7628">
+                                            <span>Volunteer</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="mailto:bossingupbiz@gmail.com">
+                                            <span>Contact us</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#footer-cstm">
+                                            <span>Donate</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/site#main">
+                                            <span>About</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/blog">
+                                            <span>Blog</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <!--end module-->
+                        </div>
+                        <div class="col-sm-2 col-md-2 col-lg-2 text-right text-left-xs text-left-sm order-lg-3">
+                            <div class="bar__module">
+                                <a style="background-color: #ffee85; border-color: #ffee85; border-radius: 30px;" class="btn btn--sm btn--primary type--uppercase" href="https://docs.google.com/forms/d/e/1FAIpQLSfdqcO5yc06j48fZdQEo5iFSDjnIk2VL5hYY-a73bPKlTSF4A/viewform?vc=0&c=0&w=1&flr=0" target="_blank">
+                                    <span class="btn__text cstm">
+                                        Feedback
+                                    </span>
+                                </a>
+                            </div>
+                            <!--end module-->
+                        </div>
+
+                        <div class="col-sm-2 col-md-2 col-lg-1 text-right text-left-xs text-left-sm order-lg-3">
+                            <div class="bar__module">
+                                <a style="background-color: #ffee85; border-color: #ffee85; border-radius: 30px;" class="btn btn--sm btn--primary type--uppercase" href="https://docs.google.com/forms/d/e/1FAIpQLScpPW5K7gadxnMlMTxAQ1D0tOaLx-p7erCqGXRzyAs3_xwRMg/viewform?vc=0&c=0&w=1&flr=0&usp=mail_form_link" target="_blank">
+                                    <span class="btn__text cstm">
+                                        Add Business
+                                    </span>
+                                </a>
+                            </div>
+                            <!--end module-->
+                        </div>
+                    </div>
+                    <!--end of row-->
+                </div>
+                <!--end of container-->
+            </nav>
+            <!--end bar-->
+        </div>
+        <div class="main-container">
+            <section class="cover height-90 imagebg text-center" data-overlay="4" id="home">
+                <div class="background-image-holder">
+                    <img alt="background" src="{% static 'img/cover.jpg' %}" />
+                </div>
+                <div class="container pos-vertical-center">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <h3 class="title-main" style="font-size: 48px; letter-spacing: -1px; margin-top: 220px; font-weight: 800; line-height: 50px;">
+                                Search for Black Owned Businesses in <a style="color: white; text-decoration: underline; font-weight: 900;" class="typeform-share" href="https://form.typeform.com/to/KrtxDhYA" data-mode="popup" target="_blank">New York City</a>
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-10">
+                            <form class="justify-content-center main_form" novalidate autocomplete="off" action='/search' method="get">
+                                <div class="row" style="margin-top: 0.57142857em; margin-bottom: 3.571429em;" >
+                                {% for field in businessFilter.form.visible_fields %}
+                                    <div class="col-sm-12 col-md-4">
+                                        {{ field }}
+                                    </div>
+                                {% endfor %}
+                                    <div class="col-sm-12 col-md-4">
+                                        <input style="color: #c9c9c9;" type="text" name="location" placeholder="State in New York" id="id_location">
+                                    </div>
+                                    <div style="display: none;">
+                                        {{ form }}
+                                    </div>
+        
+                                    <div class="col-sm-12 col-md-4">
+                                        <button type="submit" style="background-color: #ffee85; border-color: #ffee85; font-size: 18px; color: black;" class="btn btn--primary">SEARCH <i style="color: black; padding-left: 10px;" class="fas fa-search"></i></button>  
+                                    </div>
+                                </div>
+                                
+                            </form>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div style="padding:unset;" class="col-12">
+                            <div style="padding:unset;" class="col">
+                            <div class="slider slider--inline-arrows slider--arrows-hover text-center" data-arrows="true" data-timing="4000">
+                                <ul class="slides">
+                                    <li class="col-6 col-sm-4 col-md-3 col-lg-2">
+                                        <a href="categories/accessories">
+                                            <div class="category" style="background-color: rgba(61, 119, 37, 0.8); border-radius: 60%;"> 
+                                                <img alt="Image" class="image--xxs" src="{% static 'img/icons/accessories.png' %}">
+                                                <p>Accessories</p>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li class="col-6 col-sm-4 col-md-3 col-lg-2">
+                                        <a href="categories/clothing">
+                                            <div class="category" style="background-color: rgba(211, 138, 24, 0.8); border-radius: 60%;"> 
+                                                <img alt="Image" class="image--xxs" src="{% static 'img/icons/clothing.png' %}">
+                                                <p>Clothing</p>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li class="col-6 col-sm-4 col-md-3 col-lg-2">
+                                        <a href="categories/beauty_services">
+                                            <div class="category" style="background-color: rgba(171, 40, 113, 0.8); border-radius: 60%;"> 
+                                                <img alt="Image" class="image--xxs" src="{% static 'img/icons/beauty.png' %}">
+                                                <p>Beauty Services, Salons & Barbers</p>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li class="col-6 col-sm-4 col-md-3 col-lg-2">
+                                        <a href="categories/beauty_supplies">
+                                            <div class="category" style="background-color: rgba(200, 140, 113, 0.8); border-radius: 60%;"> 
+                                                <img alt="Image" class="image--xxs" src="{% static 'img/icons/beauty-supply.png' %}">
+                                                <p>Beauty Supplies</p>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li class="col-6 col-sm-4 col-md-3 col-lg-2">
+                                        <a href="categories/restaurants">
+                                            <div class="category" style="background-color: rgba(138, 93, 66, 0.8); border-radius: 60%;">
+                                                <img alt="Image" class="image--xxs" src="{% static 'img/icons/restaurant.png' %}">
+                                                <p>Restaurants</p>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li class="col-6 col-sm-4 col-md-3 col-lg-2">
+                                        <a href="categories/clubs_bars_lounges">
+                                            <div class="category" style="background-color: rgba(53, 134, 148, 0.8); border-radius: 60%;">
+                                                <img alt="Image" class="image--xxs" src="{% static 'img/icons/clubs.png' %}">
+                                                <p>Clubs/Bars/Lounges</p>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li class="col-6 col-sm-4 col-md-3 col-lg-2">
+                                        <a href="categories/childcare">
+                                            <div class="category" style="background-color: rgba(50, 113, 195, 0.8); border-radius: 60%;">
+                                                <img alt="Image" class="image--xxs" src="{% static 'img/icons/baby-care.png' %}">
+                                                <p>Childcare</p>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li class="col-6 col-sm-4 col-md-3 col-lg-2">
+                                        <a href="categories/grocery_store">
+                                            <div class="category" style="background-color: rgba(62, 167, 68, 0.8); border-radius: 60%;">
+                                                <img alt="Image" class="image--xxs" src="{% static 'img/icons/grocery.png' %}">
+                                                <p>Grocery Shops</p>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li class="col-6 col-sm-4 col-md-3 col-lg-2">
+                                        <a href="categories/construction_services">
+                                            <div class="category" style="background-color: rgba(115, 129, 132, 0.8); border-radius: 60%;">
+                                                <img alt="Image" class="image--xxs" src="{% static 'img/icons/construction.png' %}">
+                                                <p>Construction Services</p>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li class="col-6 col-sm-4 col-md-3 col-lg-2">
+                                        <a href="categories/coffee_tea_joints">
+                                            <div class="category" style="background-color: rgba(142, 119, 78, 0.8); border-radius: 60%;">
+                                                <img alt="Image" class="image--xxs" src="{% static 'img/icons/coffee_shop.png' %}">
+                                                <p>Coffee & Tea</p>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li class="col-6 col-sm-4 col-md-3 col-lg-2">
+                                        <a href="categories/professional_services">
+                                            <div class="category" style="background-color: rgba(101, 143, 203, 0.8); border-radius: 60%;"> 
+                                                <img alt="Image" class="image--xxs" src="{% static 'img/icons/professional_services.png' %}">
+                                                <p>Professional Services</p>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li class="col-6 col-sm-4 col-md-3 col-lg-2">
+                                        <a href="categories/home_cleaning">
+                                            <div class="category" style="background-color: rgba(156, 170, 236, 0.8); border-radius: 60%;">
+                                                <img alt="Image" class="image--xxs" src="{% static 'img/icons/homecleaning.png' %}">
+                                                <p>Home Cleaning Services</p>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li class="col-6 col-sm-4 col-md-3 col-lg-2">
+                                        <a href="categories/other">
+                                            <div class="category" style="background-color: rgba(156, 200, 120, 0.8); border-radius: 60%;">
+                                                <img alt="Image" class="image--xxs" src="{% static 'img/icons/other.png' %}">
+                                                <p>Other</p>
+                                            </div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                    <!--end of row-->
+                </div>
+                <!--end of container-->
+            </section>
+            
+            <section style="background-color: #ececec;" class=" ">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12 text-center">
+                            <h2 style="font-weight: 500;">Bossing Up's Favorites</h2>
+                            <br>
+                        </div>
+                        
+                        {% for business in businesses|slice:'4' %}
+
+                        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                            <div class="feature feature-1">
+                                <a href="../business/{{ business.id }}">
+                                    
+                                {% if 'Resta' in business.category %}
+                                    <img style="margin-bottom: unset;" id="{{ business.id }}" onerror="imgErrorRestaurant(this);this.src=`{% static 'img/restaurants/restaurant_placeholder.jpg' %}`">
+                                    
+                                    <script type="text/javascript">
+                                        // Possible image sources
+                                        var check_drive_link = "drive.google.com/file/";
+                                        var str_pos = "{{ business.image }}".indexOf(check_drive_link)
+
+                                        if (str_pos > -1) {
+                                            var image_url = '{{ business.image }}'
+                                            var image_url_split = image_url.split("/")
+
+                                            // console.log(image_url_split[5])
+
+                                            var wrkng_link = 'https://drive.google.com/thumbnail?id=' + image_url_split[5]
+
+                                            document.getElementById("{{ business.id }}").src = wrkng_link
+                                        }
+                                        else if ('{{ business.image }}' === '') {
+                                            document.getElementById("{{ business.id }}").src = 'https://via.placeholder.com/300x150'
+                                        }
+                                        else {
+                                            document.getElementById("{{ business.id }}").src = "{{ business.image }}"
+                                        }
+                                    </script>
+                                    
+                                {% endif %}
+                                </a>
+                                <div class="feature__body boxed boxed--border">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <span class="cstm-category"><a href="categories/restaurants">{{ business.category|truncatechars:12 }}</a></span>
+                                        </div>
+                                        <div style="line-height: 15px!important;" class="col-6">
+                                            <span style="font-size: 12px;" class="cstm-location">{{ business.county }}</span>
+                                        </div>
+                                        <div class="col-12">
+                                            <a href="../business/{{ business.id }}">
+                                                <p class="cstm-name">{{ business.title }}</p>
+                                            </a>
+                                        </div>
+                                        <div class="col-12">
+                                            <!-- <span class="cstm-rating">{{ business.rating_total }}</span><span><img class="rate-icon" style="width: 12%; height: unset; margin-top: -5px;" src="{% static 'img/icons/star.png' %}"></span><span class="cstm-reviews">({{ business.rating_count }} reviews)</span> -->
+                                            
+                                            <span></span><span class="cstm-reviews">({{ business.rating_count }} ratings)</span>
+                                            {% with answer=20 %}
+                                            <div class="star-ratings-css">
+                                                <div class="star-ratings-css-top" style="width: {{ answer|mul:business.get_rating_avg }}%"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+                                                <div class="star-ratings-css-bottom"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+                                            </div>
+					    <p style="font-size: 10px;"><em>Click to view yelp reviews</em></p>
+
+                                            {% endwith %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--end feature-->
+                        </div>
+
+                        {% endfor %}
+
+                        <div class="col-12 text-center">
+                            <a style="background-color: #ffee85; border-color: #ffee85; border-radius: 30px; font-size: 24px;" class="btn btn--sm btn--primary type--uppercase" href="categories/restaurants">
+                                    <span class="btn__text cstm">
+                                        Browse Businesses
+                                    </span>
+                                </a>                            
+                        </div>
+                    </div>
+                    <!--end of row-->
+                </div>
+                <!--end of container-->
+            </section>
+
+
+            <section style="background-color: #2A8694; padding-top: 5%;" class=" ">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12 text-center">
+                            <h2 style="font-weight: 500; color: #ffee85;">Locals to Follow</h2>
+                            <br>
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                            <div class="feature feature-1">
+                                <a target="_blank" href="https://www.eventbrite.com/o/rae-holliday-5822354167">
+                                    <div class="local-bg-1">
+                                    </div>
+                                </a>
+                                <div class="feature__body boxed boxed--border">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <span class="cstm-category"><a target="_blank" href="https://www.eventbrite.com/o/rae-holliday-5822354167">Events</a></span>
+                                        </div>
+                                        <!-- <div class="col-6">
+                                            <span class="cstm-location">New York</span>
+                                        </div> -->
+                                        <div class="col-12">
+                                            <a target="_blank" href="https://www.eventbrite.com/o/rae-holliday-5822354167">
+                                                <p style="font-size: 16px;" class="cstm-name">Rae Holliday</p>
+                                            </a>
+                                            <p style="font-size: 12px;"><i><a href="https://www.eventbrite.com/o/rae-holliday-5822354167" target="_blank">Follow Rae Holliday on eventbrite</i></p>
+                                        </div>
+                                        <!-- <div class="col-12">
+                                            <span class="cstm-rating">4.8</span><span><img class="rate-icon" style="width: 12%; height: unset; margin-top: -5px;" src="{% static 'img/icons/star.png' %}"></span><span class="cstm-reviews">(5 reviews)</span>
+                                        </div> -->
+                                    </div>
+                                </div>
+                            </div>
+                            <!--end feature-->
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                            <div class="feature feature-1">
+                                <a target="_blank" href="https://instagram.com/yasminejameelah?igshid=85aulr4swvls">
+                                    <div class="local-bg-2">
+                                    </div>
+                                </a>
+                                <div class="feature__body boxed boxed--border">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <span class="cstm-category"><a target="_blank" href="https://instagram.com/yasminejameelah?igshid=85aulr4swvls">Instagram</a></span>
+                                        </div>
+                                        <!-- <div class="col-6">
+                                            <span class="cstm-location">New York</span>
+                                        </div> -->
+                                        <div class="col-12">
+                                            <a target="_blank" href="https://instagram.com/yasminejameelah?igshid=85aulr4swvls">
+                                                <p style="font-size: 16px;" class="cstm-name">Yasmine Jameelah</p>
+                                            </a>
+                                            <p style="font-size: 12px; line-height: 1.0em;"><i><a href="https://instagram.com/yasminejameelah?igshid=85aulr4swvls" target="_blank">Follow Yasmine Jameelah on Instagram</i></p>
+                                        </div>
+                                        <!-- <div class="col-12">
+                                            <span class="cstm-rating">4.8</span><span><img class="rate-icon" style="width: 12%; height: unset; margin-top: -5px;" src="{% static 'img/icons/star.png' %}"></span><span class="cstm-reviews">(5 reviews)</span>
+                                        </div> -->
+                                    </div>
+                                </div>
+                            </div>
+                            <!--end feature-->
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                            <div class="feature feature-1">
+                                <a target="_blank" href="https://www.markwestmuseum.org/">
+                                    <div class="local-bg-3">
+                                    </div>
+                                </a>
+                                <div class="feature__body boxed boxed--border">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <span class="cstm-category"><a target="_blank" href="https://www.markwestmuseum.org/">Upcoming events</a></span>
+                                        </div>
+                                        <!-- <div class="col-6">
+                                            <span class="cstm-location">New York</span>
+                                        </div> -->
+                                        <div class="col-12">
+                                            <a target="_blank" href="https://www.markwestmuseum.org/">
+                                                <p style="font-size: 16px;" class="cstm-name">House of Mark West</p>
+                                            </a>
+                                            <p style="font-size: 12px; line-height: 1.0em;"><i><a href="https://www.markwestmuseum.org/" target="_blank">Follow House of Mark West on upcoming events</i></p>
+                                        </div>
+                                        <!-- <div class="col-12">
+                                            <span class="cstm-rating">4.8</span><span><img class="rate-icon" style="width: 12%; height: unset; margin-top: -5px;" src="{% static 'img/icons/star.png' %}"></span><span class="cstm-reviews">(5 reviews)</span>
+                                        </div> -->
+                                    </div>
+                                </div>
+                            </div>
+                            <!--end feature-->
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                            <div class="feature feature-1">
+                                <a target="_blank" href="https://www.facebook.com/TapisRouge">
+                                    <div class="local-bg-4">
+                                    </div>
+                                </a>
+                                <div class="feature__body boxed boxed--border">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <span class="cstm-category"><a target="_blank" href="https://www.facebook.com/TapisRouge">Facebook</a></span>
+                                        </div>
+                                        <!-- <div class="col-6">
+                                            <span class="cstm-location">New York</span>
+                                        </div> -->
+                                        <div class="col-12">
+                                            <a target="_blank" href="https://www.facebook.com/TapisRouge">
+                                                <p style="font-size: 16px;" class="cstm-name">Tapis Rouge</p>
+                                            </a>
+                                            <p style="font-size: 12px; line-height: 1.0em;"><i><a href="https://web.facebook.com/TapisRouge?_rdc=1&_rdr" target="_blank">Follow Tapis Rouge on Facebook</a></i></p>
+                                        </div>
+                                        <!-- <div class="col-12">
+                                            <span class="cstm-rating">4.8</span><span><img class="rate-icon" style="width: 12%; height: unset; margin-top: -5px;" src="{% static 'img/icons/star.png' %}"></span><span class="cstm-reviews">(5 reviews)</span>
+                                        </div> -->
+                                    </div>
+                                </div>
+                            </div>
+                            <!--end feature-->
+                        </div>
+                    </div>
+                    <!--end of row-->
+                </div>
+                <!--end of container-->
+            </section>
+            
+            
+            
+            <section style="background-color: #4E1E24; padding-top: 5%;" class="text-center">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12 col-lg-12">
+                            <h2 class="footer-main-txt" style="color: #ffee85; font-weight: 800; font-size: 42px;">Add a new business for free</h2>
+                            <h4 style="color: #ffee85;">Would you like to be part of our growing  community of businesses?<br>Hit the button below to get started</h4>
+                            <div class="col-12 text-center mb--2">
+                                <a style="background-color: #ffee85; border-color: #ffee85; border-radius: 30px; font-size: 24px;" class="btn btn--sm btn--primary type--uppercase" href="https://docs.google.com/forms/d/e/1FAIpQLScpPW5K7gadxnMlMTxAQ1D0tOaLx-p7erCqGXRzyAs3_xwRMg/viewform?vc=0&c=0&w=1&flr=0&usp=mail_form_link" target="_blank">
+                                        <span class="btn__text cstm">
+                                            Add Businesses
+                                        </span>
+                                </a>                            
+                            </div>
+                            <div class="video-cover border--round">
+                                <div class="background-image-holder">
+                                    <img alt="image" src="{% static 'img/blog-3.jpg' %}" />
+                                </div>
+                                <div class="video-play-icon"></div>
+                                <video muted style="width: 100%; height: 500px;" controls>
+                                  <source src="{% static 'img/video.mp4' %}" type="video/mp4">
+                                  Your browser does not support the video tag.
+                                </video>
+                            </div>
+                            <!--end video cover-->
+                        </div>
+                    </div>
+                    <!--end of row-->
+                </div>
+                <!--end of container-->
+            </section>
+
+            <section style="background-color: #ffee85; padding-top: 5%;">
+                <div class="masonry masonry--gapless">
+                    <div class="col-12 text-center">
+                        <h2 style="font-weight: 500; color: #4E1E24; font-weight: 600;">Bossing Up's Top Discoveries</h2>
+                        <br>
+                    </div>
+                    <div class="masonry__container bg--secondary">
+                        <div class="col-md-4 col-12 masonry__item" data-masonry-filter="Marketing">
+                            <div class="project-thumb hover-element height-50">
+                                <a target="_blank" href="https://www.instagram.com/p/CLsh6-nlGPG/?utm_source=ig_web_copy_link">
+                                    <div class="hover-element__initial">
+                                        <div class="background-image-holder"> <img alt="background" src="{% static 'img/ig.jpg' %}"> </div>
+                                    </div>
+                                    <div class="hover-element__reveal" data-overlay="9">
+                                        <div class="project-thumb__title">
+                                            <h5>Coffee</h5> <span>Coffee is almost a must in the mornings and we’re always trying to shop black so tag them below! Give someone a new shop to grab a cup coffee tomorrow.</span> </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-12 masonry__item" data-masonry-filter="Design">
+                            <div class="project-thumb hover-element height-50">
+                                <a target="_blank" href="https://www.instagram.com/tv/CGvCJhNFbyh/?igshid=i74qfek86z29">
+                                    <div class="hover-element__initial">
+                                        <div class="background-image-holder"> <img alt="background" src="{% static 'img/ig2.jpg' %}"> </div>
+                                    </div>
+                                    <div class="hover-element__reveal" data-overlay="9">
+                                        <div class="project-thumb__title">
+                                            <h5>Bossing Up</h5> <span>Catch our Founder live tomorrow with @endirocoffee and their founder! We’ll go over their product and get to know Endiro Coffee a little bit better ☕️</span> </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-12 masonry__item" data-masonry-filter="Design">
+                            <div class="project-thumb hover-element height-50">
+                                <a target="_blank" href="https://www.instagram.com/p/CLiC8BCFOsQ/?utm_source=ig_web_copy_link">
+                                    <div class="hover-element__initial">
+                                        <div class="background-image-holder"> <img alt="background" src="{% static 'img/ig3.jpg' %}"> </div>
+                                    </div>
+                                    <div class="hover-element__reveal" data-overlay="9">
+                                        <div class="project-thumb__title">
+                                            <h5>Business</h5> <span>What black owned business did you support this week? 👀 Put us on to your favorites! Tag them below ⬇️⬇️⬇️⬇️</span> </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section style="background-color: black; padding-top: 5%;" class="">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-xs-12 col-md-7 text-left">
+                                <h2 class="text-center-xs" style="color: #ffee85; font-weight: 700;">Don't be left out</h2>
+                                <h4 class="text-center-xs" style="color: #ffee85;">Join our newsletter to keep up to date with Bossing up.  Be the first to know about our deals, discounts and coupons</h4>
+                            </div>
+                            <div class="col-xs-12 col-md-5 col-lg-5 text-right cstm-xs-center">
+                                <a style="margin-top:40px; background-color: #ffee85; border-color: #eece0e; border-radius: 30px; font-size: 24px;" class="btn btn--sm btn--primary type--uppercase" target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLSfcqaBwFLEulg2sSspDGScfh4z2ZhMKvjA2OtrjDl1eKEQI9A/viewform">
+                                        <span class="btn__text cstm">
+                                            Join
+                                        </span>
+                                </a>  
+                            </div>
+                        </div>
+                        <!--end of row-->
+                    </div>
+                    <!--end of container-->
+            </section>
+
+
+            <footer id="footer-cstm" style="background-color: #e2e2e2;" class="footer-6 unpad--bottom">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xs-12 col-md-3 col-lg-2 text-center">
+                            <a href="/">
+                                <img class="footer-img-xs" src="{% static 'img/logo2.png' %}">
+                            </a>
+                        </div>
+                        <div class="col-xs-12 col-md-9 col-lg-10 text-center-xs">
+                            <h2 class="text-center-xs" style="color: #4E1E24; font-weight: 500;">Find Dope Busineses in Your Community</h2>
+                            <a style="margin-top:10px; background-color: #ececec; border-color: #4e1e24; border-radius: 30px; font-size: 18px;" class="btn btn--sm btn--primary type--uppercase" href="https://docs.google.com/forms/d/e/1FAIpQLSfdqcO5yc06j48fZdQEo5iFSDjnIk2VL5hYY-a73bPKlTSF4A/viewform?vc=0&c=0&w=1&flr=0" target="_blank">
+                                        <span style="color: #4e1e24;" class="btn__text cstm">
+                                            Feedback
+                                        </span>
+                            </a>
+                            
+                            <a style="margin-top:10px; background-color: #ececec; border-color: #4e1e24; border-radius: 30px; font-size: 18px;" class="btn btn--sm btn--primary type--uppercase" href="https://docs.google.com/forms/d/e/1FAIpQLScpPW5K7gadxnMlMTxAQ1D0tOaLx-p7erCqGXRzyAs3_xwRMg/viewform?vc=0&c=0&w=1&flr=0&usp=mail_form_link" target="_blank">
+                                        <span style="color: #4E1E24;" class="btn__text cstm">
+                                            Add business
+                                        </span>
+                            </a>
+
+                            <div class="row mt--2">
+                                <div class="col-6 col-md-4 col-lg-4 cstm-footer">
+                                    <h6>Company</h6>
+                                    
+                                    <p><a href="/site#main">About us</a></p>
+                                    <p><a href="/blog">Blog</a></p>
+                                    <p><a target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLScNrBzv6UEHi1c7Hj0gNIVF7obiEQnO-kAp9KktkEpabI0SnQ/viewform?vc=0&c=0&w=1&flr=0&gxids=7628">Volunteer</a></p>
+                                    
+                                </div>
+                                <div class="col-6 col-md-4 col-lg-4 cstm-footer">
+                                    <h6 class="">Browse</h6>
+
+                                    <p><a href="categories/restaurants">Business listings</a></p>
+                                    <p><a href="https://store.bossingup.net">Store</a></p>
+                                    <p><a href="#0">Donate via Cashapp $bossingupbiz</a></p>
+                                </div>
+
+                                <div class="col-12 col-md-4 col-lg-4 cstm-footer">
+                                    <h6 class="#0">Contact us</h6>
+
+                                    <p><a href="mailto:bossingupbiz@gmail.com">bossingupbiz@gmail.com</a></p>
+                                    
+                                    <ul class="social-list list-inline list--hover">
+                                        <li><a href="https://twitter.com/bossingupbiz?lang=en" target="_blank"><i class="socicon socicon-twitter icon icon--sm"></i></a></li>
+                                        <li><a href="https://www.facebook.com/BossingUpbiz/" target="_blank"><i class="socicon socicon-facebook icon icon--sm"></i></a></li>
+                                        <li><a href="https://www.instagram.com/bossingupbiz/" target="_blank"><i class="socicon socicon-instagram icon icon--sm"></i></a></li>
+                                    </ul>
+                                </div>
+                            </div> 
+                        </div>
+                    </div>
+                    <!--end of row-->
+                </div>
+                <!--end of container-->
+                <div class="footer__lower text-center-xs">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <span class="">&copy;
+                                    <span class="update-year"></span> Bossing Up Inc &mdash; All Rights Reserved</span>
+                            </div>
+
+                            <div class="col-md-6 text-right">
+                                <a style="padding-right: 12px;" href="/terms_of_use"><i>Terms of use</i></a>
+                                <a href="/privacy_policy"><i>Privacy Policy</i></a>
+                            </div>
+                            
+                            
+                        </div>
+                        <!--end of row-->
+                    </div>
+                    <!--end of container-->
+                </div>
+            </footer>
+        </div>
+        <!--<div class="loader"></div>-->
+        <a class="back-to-top inner-link" href="#start" data-scroll-class="100vh:active">
+            <i class="stack-interface stack-up-open-big"></i>
+        </a>
+        <script src="{% static 'js/jquery-3.1.1.min.js' %}"></script>
+        <script src="{% static 'js/flickity.min.js' %}"></script>
+        <script src="{% static 'js/easypiechart.min.js' %}"></script>
+        <script src="{% static 'js/parallax.js' %}"></script>
+        <script src="{% static 'js/typed.min.js' %}"></script>
+        <script src="{% static 'js/datepicker.js' %}"></script>
+        <script src="{% static 'js/isotope.min.js' %}"></script>
+        <script src="{% static 'js/ytplayer.min.js' %}"></script>
+        <script src="{% static 'js/lightbox.min.js' %}"></script>
+        <script src="{% static 'js/granim.min.js' %}"></script>
+        <script src="{% static 'js/jquery.steps.min.js' %}"></script>
+        <script src="{% static 'js/countdown.min.js' %}"></script>
+        <script src="{% static 'js/twitterfetcher.min.js' %}"></script>
+        <script src="{% static 'js/spectragram.min.js' %}"></script>
+        <script src="{% static 'js/smooth-scroll.min.js' %}"></script>
+
+        <script type="text/javascript">
+            function imgErrorClothe(image) {
+                image.onerror = "";
+                var imgArray = ["{% static 'img/clothing/clothe2.jpg' %}", "{% static 'img/clothing/clothing_placeholder.jpg' %}"];
+                var randomNumber = Math.floor(Math.random()*imgArray.length);
+                image.src = imgArray[randomNumber];
+                return true;
+            }
+        
+            function imgErrorAccessories(image) {
+                image.onerror = "";
+                var imgArray = ["{% static 'img/accessories/accessories.jpg' %}", "{% static 'img/accessories/accessories_2.jpg' %}"];
+                var randomNumber = Math.floor(Math.random()*imgArray.length);
+                image.src = imgArray[randomNumber];
+                return true;
+            }
+        
+            function imgErrorRestaurant(image) {
+                image.onerror = "";
+                var imgArray = ["{% static 'img/restaurants/restaurant_2.jpg' %}", "{% static 'img/restaurants/restaurant_placeholder.jpg' %}"];
+                var randomNumber = Math.floor(Math.random()*imgArray.length);
+                image.src = imgArray[randomNumber];
+                return true;
+            }
+        
+            function imgErrorClub(image) {
+                image.onerror = "";
+                var imgArray = ["{% static 'img/clubs/club_1.jpg' %}", "{% static 'img/clubs/club_2.jpg' %}", "{% static 'img/clubs/club_3.jpg' %}", "{% static 'img/clubs/club_4.jpg' %}"];
+                var randomNumber = Math.floor(Math.random()*imgArray.length);
+                image.src = imgArray[randomNumber];
+                return true;
+            }
+        
+            function imgErrorBeauty(image) {
+                image.onerror = "";
+                var imgArray = ["{% static 'img/beauty/beauty_placeholder.jpg' %}"];
+                var randomNumber = Math.floor(Math.random()*imgArray.length);
+                image.src = imgArray[randomNumber];
+                return true;
+            }
+        
+            function imgErrorCleaning(image) {
+                image.onerror = "";
+                var imgArray = ["{% static 'img/cleaning/cleaning_placeholder.jpg' %}"];
+                var randomNumber = Math.floor(Math.random()*imgArray.length);
+                image.src = imgArray[randomNumber];
+                return true;
+            }
+        
+            function imgErrorProfsrvs(image) {
+                image.onerror = "";
+                var imgArray = ["{% static 'img/professional_services/professional_1.jpg' %}"];
+                var randomNumber = Math.floor(Math.random()*imgArray.length);
+                image.src = imgArray[randomNumber];
+                return true;
+            }
+        
+            function imgErrorConstruction(image) {
+                image.onerror = "";
+                var imgArray = ["{% static 'img/construction/construction_1.jpg' %}"];
+                var randomNumber = Math.floor(Math.random()*imgArray.length);
+                image.src = imgArray[randomNumber];
+                return true;
+            }
+        
+            function imgErrorCoffee(image) {
+                image.onerror = "";
+                var imgArray = ["{% static 'img/coffee/coffee_1.jpg' %}"];
+                var randomNumber = Math.floor(Math.random()*imgArray.length);
+                image.src = imgArray[randomNumber];
+                return true;
+            }
+        
+            function imgErrorHealth(image) {
+                image.onerror = "";
+                var imgArray = ["{% static 'img/health_wellness/health_1.jpg' %}"];
+                var randomNumber = Math.floor(Math.random()*imgArray.length);
+                image.src = imgArray[randomNumber];
+                return true;
+            }
+        
+            
+        </script>
+        
+        <script src="{% static 'js/maps.js' %}"></script>
+        <script src="https://kit.fontawesome.com/04001b9561.js" crossorigin="anonymous"></script>
+        <script> (function() { var qs,js,q,s,d=document, gi=d.getElementById, ce=d.createElement, gt=d.getElementsByTagName, id="typef_orm_share", b="https://embed.typeform.com/"; if(!gi.call(d,id)){ js=ce.call(d,"script"); js.id=id; js.src=b+"embed.js"; q=gt.call(d,"script")[0]; q.parentNode.insertBefore(js,q) } })() </script>
+        <script src="{% static 'js/scripts.js' %}"></script>
+        
+    </body>
+</html>

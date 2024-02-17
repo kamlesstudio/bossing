@@ -1,0 +1,663 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+    <head>
+
+        <!-- GOOGLE TRACKING SETUP -->
+
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-K0KGN7KVT8"></script>
+        <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-K0KGN7KVT8');
+        </script>
+
+        <meta charset="utf-8">
+        <title>Find black owned businesses around you</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Site Description Here">
+        <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" type="text/css" media="all" />
+        <link href="{% static 'css/stack-interface.css' %}" rel="stylesheet" type="text/css" media="all" />
+        <link href="{% static 'css/socicon.css' %}" rel="stylesheet" type="text/css" media="all" />
+        <link href="{% static 'css/lightbox.min.css' %}" rel="stylesheet" type="text/css" media="all" />
+        <link href="{% static 'css/flickity.css' %}" rel="stylesheet" type="text/css" media="all" />
+        <link href="{% static 'css/iconsmind.css' %}" rel="stylesheet" type="text/css" media="all" />
+        <link href="{% static 'css/jquery.steps.css' %}" rel="stylesheet" type="text/css" media="all" />
+        <link href="{% static 'css/theme.css' %}" rel="stylesheet" type="text/css" media="all" />
+        <link href="{% static 'css/custom.css' %}" rel="stylesheet" type="text/css" media="all" />
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+        
+        <!-- <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script> -->
+        <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAqkwYqdr51nm3-ILj_Wtd3r8QhsVt7d5E&callback=initMap&libraries=&v=weekly"
+        defer
+        ></script>
+        <script src="https://unpkg.com/@mapbox/mapbox-sdk/umd/mapbox-sdk.min.js"></script>
+
+        <style type="text/css">
+            .boxed:not([class*='bg-']) {
+                background-color: white!important;
+                height: 155px;
+                border-radius: 0px 0px 6px 6px!important;
+            }
+        </style>
+
+        <!-- Facebook Pixel Code -->
+        <script>
+            !function(f,b,e,v,n,t,s)
+            {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+            n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+            if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+            n.queue=[];t=b.createElement(e);t.async=!0;
+            t.src=v;s=b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t,s)}(window, document,'script',
+            'https://connect.facebook.net/en_US/fbevents.js');
+            fbq('init', '160891119314064');
+            fbq('track', 'PageView');
+            </script>
+            <noscript><img height="1" width="1" style="display:none"
+            src="https://www.facebook.com/tr?id=160891119314064&ev=PageView&noscript=1"
+            /></noscript>
+            <!-- End Facebook Pixel Code -->
+            
+    </head>
+    <body class=" " data-smooth-scroll-offset='180'>
+        <div id="start"></div>
+        <!-- <div id="preloader">
+            <div class="medica-load"></div>
+            <img src="{% static 'img/logo2.png' %}" alt="logo">
+        </div>
+ -->
+        <div id="preloader">
+            <div class="medica-load"></div>
+            <img src="{% static 'img/logo2.png' %}" alt="logo">
+        </div>
+
+        <div class="nav-container ">
+            <div class="bar bar--sm visible-xs visible-sm">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-3 col-md-2">
+                            <a href="/">
+                                <img class="logo logo-dark" alt="logo" src="{% static 'img/logo2.png' %}" />
+                                <img class="logo logo-light" alt="logo" src="{% static 'img/logo2.png' %}" />
+                            </a>
+                        </div>
+                        <div class="col-9 col-md-10 text-right">
+                            <a href="#" class="hamburger-toggle" data-toggle-class="#menu2;hidden-xs">
+                                <i class="icon icon--sm stack-interface stack-menu"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <!--end of row-->
+                </div>
+                <!--end of container-->
+            </div>
+            <!--end bar-->
+            <nav id="menu2" class="bar bar-2 hidden-xs hidden-sm bar--transparent bar--absolute" data-scroll-class='90vh:pos-fixed'>
+                <div class="container_2">
+                    <div class="row">
+                        <div class="col-md-2 col-lg-3 text-center text-left-sm hidden-xs">
+                            <div class="bar__module">
+                                <a href="/">
+                                    <img class="logo logo-dark" alt="logo" src="{% static 'img/logo2.png' %}" />
+                                    <img class="logo logo-light" alt="logo" src="{% static 'img/logo2.png' %}" />
+                                </a>
+                            </div>
+                            <!--end module-->
+                        </div>
+                        <div class="col-md-8 col-lg-7 text-right">
+                            <div class="bar__module">
+                                <ul class="menu-horizontal text-left">
+                                    <li class="dropdown">
+                                        <span class="dropdown__trigger">Categories</span>
+                                        <div class="dropdown__container">
+                                            <div class="container">
+                                                <div class="row">
+                                                    <div class="dropdown__content col-lg-4 col-md-4">
+                                                        <ul class="menu-vertical">
+                                                            <li class="dropdown">
+                                                                <a href="categories/clothing">
+                                                                    <span class="dropdown__trigger">Clothing</span>
+                                                                </a>
+                                                            </li>
+                                                            <li class="dropdown">
+                                                                <a href="categories/accessories">
+                                                                    <span class="dropdown__trigger">Accessories</span>
+                                                                </a>
+                                                            </li>
+                                                            <li class="dropdown">
+                                                                <a href="categories/restaurants">
+                                                                    <span class="dropdown__trigger">Restaurants</span>
+                                                                </a>
+                                                            </li>
+                                                            <li class="dropdown">
+                                                                <a href="categories/clubs_bars_lounges">
+                                                                    <span class="dropdown__trigger">Clubs/Bars/Lounges</span>
+                                                                </a>
+                                                            </li>
+                                                            <li class="dropdown">
+                                                                <a href="categories/beauty_services">
+                                                                    <span class="dropdown__trigger">Beauty Services, Salons & Barbers</span>
+                                                                </a>
+                                                            </li>
+                                                            <li class="dropdown">
+                                                                <a href="categories/beauty_supplies">
+                                                                    <span class="dropdown__trigger">Beauty Supplies</span>
+                                                                </a>
+                                                            </li>
+                                                            <li class="dropdown">
+                                                                <a href="categories/home_cleaning">
+                                                                    <span class="dropdown__trigger">Home & Cleaning Services</span>
+                                                                </a>
+                                                            </li>
+                                                            <li class="dropdown">
+                                                                <a href="categories/professional_services">
+                                                                    <span class="dropdown__trigger">Professional Services</span>
+                                                                </a>
+                                                            </li>
+                                                            <li class="dropdown">
+                                                                <a href="categories/construction_services">
+                                                                    <span class="dropdown__trigger">Construction & Auto Services</span>
+                                                                </a>
+                                                            </li>
+                                                            <li class="dropdown">
+                                                                <a href="categories/coffee_tea_joints">
+                                                                    <span class="dropdown__trigger">Coffee and Tea</span>
+                                                                </a>
+                                                            </li>
+                                                            <li class="dropdown">
+                                                                <a href="categories/grocery_store">
+                                                                    <span class="dropdown__trigger">Grocery Store</span>
+                                                                </a>
+                                                            </li>
+                                                            <li class="dropdown">
+                                                                <a href="categories/childcare">
+                                                                    <span class="dropdown__trigger">Childcare</span>
+                                                                </a>
+                                                            </li>
+                                                            <li class="dropdown">
+                                                                <a href="categories/health_and_wellness">
+                                                                    <span class="dropdown__trigger">Health & Wellness</span>
+                                                                </a>
+                                                            </li>
+
+                                                            <li class="dropdown">
+                                                                <a href="categories/other">
+                                                                    <span class="dropdown__trigger">Other</span>
+                                                                </a>
+                                                            </li>
+
+                                                        </ul>
+                                                    </div>
+                                                    <!--end dropdown content-->
+                                                </div>
+                                                <!--end row-->
+                                            </div>
+                                        </div>
+                                        <!--end dropdown container-->
+                                    </li>
+                                    <li>
+                                        <a target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLSfcqaBwFLEulg2sSspDGScfh4z2ZhMKvjA2OtrjDl1eKEQI9A/viewform">
+                                            <span>Join</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLScNrBzv6UEHi1c7Hj0gNIVF7obiEQnO-kAp9KktkEpabI0SnQ/viewform?vc=0&c=0&w=1&flr=0&gxids=7628">
+                                            <span>Volunteer</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="mailto:bossingupbiz@gmail.com">
+                                            <span>Contact us</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#0">
+                                            <span>Donate</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/site#main">
+                                            <span>About</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/blog">
+                                            <span>Blog</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <!--end module-->
+                        </div>
+                        <div class="col-md-1 col-lg-1 text-right text-left-xs text-left-sm order-lg-3">
+                            <div class="bar__module">
+                                <a style="background-color: #ffee85; border-color: #ffee85; border-radius: 30px; margin-top: 8px;" class="btn btn--sm btn--primary type--uppercase" href="https://docs.google.com/forms/d/e/1FAIpQLScpPW5K7gadxnMlMTxAQ1D0tOaLx-p7erCqGXRzyAs3_xwRMg/viewform?vc=0&c=0&w=1&flr=0&usp=mail_form_link" target="_blank">
+                                    <span class="btn__text cstm">
+                                        Add Business
+                                    </span>
+                                </a>
+                            </div>
+                            <!--end module-->
+                        </div>
+                    </div>
+                    <!--end of row-->
+                </div>
+                <!--end of container-->
+            </nav>
+            <!--end bar-->
+        </div>
+        <div class="main-container">
+            <section class="cover height-30 imagebg text-center" data-overlay="4" id="home">
+                <div class="background-image-holder">
+                    <img alt="background" src="{% static 'img/privacy_policy.jpg' %}" />
+                </div>
+                <div class="container pos-vertical-center">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <h3 class="title-main" style="font-size: 48px; letter-spacing: -1px; margin-top: 220px; font-weight: 800; line-height: 50px;">
+                                TERMS OF USE
+                            </h3>
+                        </div>
+                    </div>
+                    <!--end of row-->
+                </div>
+                <!--end of container-->
+            </section>
+            
+            <section style="background-color: #ececec;" class=" ">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12 text-left">
+                            <h1 style="font-weight: 500;">Bossing Up, inc. Terms of Use</h1>
+                            <br>
+                            <p>Bossing Up, Inc. (“Bossing Up,” “we,” “us,” or “our”) welcomes you. We provide you access to our
+website at bossingup.net (the “Website”) together with the searchable web application and e-store (the
+“App”, and together with the Website and any other software or documentation provided therewith, the
+“Platform”), subject to the following terms of use (the “Terms of Use”), which may be updated by us from
+time to time without notice to you. By accessing the Platform, you acknowledge that you have read,
+understood, and agree to be legally bound by these Terms of Use and our Privacy Policy, which is hereby
+incorporated by reference (collectively, this “Agreement”). If you do not agree to any terms of the
+Agreement, please do not use the Platform.</p>
+                            <p><strong>THE SECTIONS BELOW TITLED “BINDING ARBITRATION” AND “CLASS ACTION
+WAIVER” CONTAIN A BINDING ARBITRATION AGREEMENT AND CLASS ACTION
+WAIVER. THEY AFFECT YOUR LEGAL RIGHTS.  PLEASE READ THEM.</strong></p>
+                            <p>Capitalized terms not defined in these Terms of Use shall have the meaning set forth in our Privacy Policy.</p>
+
+                            <br>
+                            <ol>
+                                <li style="font-size: 2.35714286em; font-weight: 500; color: black;">
+                                    <p>RESTRICTIONS</p>
+                                </li>
+                                <p>The Platform is available only to individuals aged 13 years or older. If you are 13 or older, but under the
+age of majority in your jurisdiction, you should review this Agreement with your parent or guardian to
+make sure that you and your parent or guardian understand it. If you are under the age of 13, you may use
+the Platform only with the consent of your parent or guardian.
+                                </p>
+
+                                <p>We reserve the right, in our sole and absolute discretion, to deny you access to the Platform, or any portion
+of the Website, without notice and without reason.</p>
+                                
+
+                                <li style="font-size: 2.35714286em; font-weight: 500; padding-top: 5%; color: black;">
+                                    <p>PLATFORM</p>
+                                </li>
+                                <p>Your use of our Platform are governed by these Terms of Use and our Privacy Policy. Please refer to these
+separate terms if and when you use our Platform. All such separate terms and conditions are incorporated
+into these Terms of Use by this reference to the extent applicable to you.</p>
+
+                            
+
+                                 <li style="font-size: 2.35714286em; font-weight: 500; padding-top: 5%; color: black;">
+                                    <p>COMMUNITY GUIDELINES</p>
+                                </li>
+
+                                <p>By accessing the Platform, you agree that:</p>
+
+                                <ul>
+                                    <li>You will comply with all applicable laws in your use of the Platform and will not use the Platform
+for any unlawful purpose;</li>
+                                    
+                                    <li>You will not access or use the Platform to collect any market research for a competing business;</li>
+
+                                    <li>You will not impersonate any person or entity or falsely state or otherwise misrepresent your
+affiliation with a person or entity;</li>
+                                    <li>You will not interfere with, or attempt to interrupt the proper operation of, the Platform through the
+use of any virus, device, information collection or transmission mechanism, software or routine, or
+access or attempt to gain access to any Content (as defined below), data, files, or passwords related
+to the Platform through hacking, password or data mining, or any other means;</li>
+                                    <li>You will not decompile, reverse engineer, or disassemble any software or other products or
+processes accessible through the Platform;</li>
+                                    <li>You will not cover, obscure, block, or in any way interfere with any advertisements and/or safety
+features on the Platform;</li>
+                                    <li>You will not use any robot, spider, scraper, or other automated means to access the Platform for
+any purpose without our express written permission; provided, however, we grant the operators of
+public search engines permission to use spiders to copy materials from the public portions of the
+Platform for the sole purpose of and solely to the extent necessary for creating publicly-available
+searchable indices of the materials, but not caches or archives of such materials; and</li>
+
+                                    <li>You will not take any action that imposes or may impose (in our sole discretion) an unreasonable
+or disproportionately large load on our technical infrastructure.</li>
+
+
+                                </ul>
+
+
+                                <li style="font-size: 2.35714286em; font-weight: 500; padding-top: 5%; color: black;">
+                                    <p>INTELLECTUAL PROPERTY</p>
+                                </li>
+
+                                <p>The Platform may contain material, such as text, graphics, photographs, images, and other material
+(collectively referred to as the “Content”) provided by or on behalf of Bossing Up. The Content may be
+owned by us or third parties. The Content is protected under both United States and foreign laws.
+Unauthorized use of the Content may violate copyright, trademark, and other laws.<br>
+You may view all Content for your own personal, non-commercial use. No other use is permitted without
+the prior written consent of Bossing Up. Bossing Up and its licensors retain all right, title, and interest,
+including all intellectual property rights, in and to the Content. You must retain all copyright and other
+proprietary notices contained in the original Content. You may not sell, transfer, assign, license,
+sublicense, or modify the Content or reproduce, display, publicly perform, make a derivative version of,
+distribute, or otherwise use the Content in any way for any public or commercial purpose.<br>
+If you violate any part of this Agreement, your permission to access the Content and the Platform
+automatically terminates and you must immediately destroy any copies you have made of the Content.
+The trademarks, service marks, and logos of Bossing Up (the “Bossing Up Trademarks”) used and
+displayed on the Platform are registered and unregistered trademarks or service marks of Bossing Up.
+Other company, product, and service names located on the Platform may be trademarks or service marks
+owned by others (the “Third-Party Trademarks,” and, collectively with Bossing Up Trademarks, the
+“Trademarks”). Nothing on the Platform should be construed as granting, by implication, estoppel, or
+otherwise, any license or right to use the Trademarks, without our prior written permission specific for each
+such use. Use of the Trademarks as part of a link to or from any site is prohibited unless establishment of
+such a link is approved in advance by us in writing. All goodwill generated from the use of Bossing Up
+Trademarks inures to our benefit.<br>
+Elements of the Platform are protected by trade dress, trademark, unfair competition, and other state and
+federal laws and may not be copied or imitated in whole or in part, by any means, including, but not limited
+to, the use of framing or mirrors. None of the Content may be retransmitted without our express, written
+consent for each and every instance.</p>
+
+                                <li style="font-size: 2.35714286em; font-weight: 500; padding-top: 5%; color: black;">
+                                    <p>COMMUNICATIONS WITH AND SUBMISSIONS TO US</p>
+                                </li>
+
+                                <p>Although we encourage you to e-mail us, we do not want you to, and you should not, e-mail us any content
+that contains confidential information. With respect to all e-mails and communications you send to us,
+including, but not limited to, ratings, feedback, questions, comments, suggestions, and the like, we shall be
+free to use any ratings data, ideas, concepts, know-how, or techniques contained in your communications
+for any purpose whatsoever, including but not limited to, the development, production, and marketing of
+products and services that incorporate such information without compensation or attribution to you.</p>
+    
+                                <li style="font-size: 2.35714286em; font-weight: 500; padding-top: 5%; color: black;">
+                                    <p>NO WARRANTIES; LIMITATION OF LIABILITY</p>
+                                </li>
+
+                                <p>YOU ACKNOWLEDGE THAT BOSSING UP DOES NOT REPRESENT OR WARRANT THAT THE
+CONTENT AND ANY OTHER DATA OR INFORMATION PROVIDED THROUGH THE
+PLATFORM WILL BE ACCURATE OR COMPLETE.<br>
+YOU ACKNOWLEDGE THAT THE PLATFORM MAY CONTAIN BUGS, ERRORS, AND OTHER
+PROBLEMS THAT COULD CAUSE SYSTEM FAILURES. CONSEQUENTLY, THE PLATFORM
+AND THE CONTENT ARE PROVIDED “AS IS” AND “AS AVAILABLE” WITHOUT ANY
+WARRANTIES OF ANY KIND, INCLUDING THAT THE PLATFORM OR CONTENT WILL
+OPERATE ERROR-FREE OR THAT THE PLATFORM, ITS SERVERS, OR THE CONTENT ARE
+FREE OF COMPUTER VIRUSES OR SIMILAR CONTAMINATION OR DESTRUCTIVE FEATURES.
+WE DISCLAIM ALL WARRANTIES, INCLUDING, BUT NOT LIMITED TO, WARRANTIES OF
+TITLE, MERCHANTABILITY, NON-INFRINGEMENT OF THIRD PARTIES’ RIGHTS, AND
+FITNESS FOR PARTICULAR PURPOSE AND ANY WARRANTIES ARISING FROM A COURSE OF
+DEALING, COURSE OF PERFORMANCE, OR USAGE OF TRADE.<br>
+IN CONNECTION WITH ANY WARRANTY, CONTRACT, OR COMMON LAW TORT CLAIMS: (I)
+WE AND OUR LICENSORS SHALL NOT BE LIABLE FOR ANY INCIDENTAL OR
+CONSEQUENTIAL DAMAGES, LOST PROFITS, OR DAMAGES RESULTING FROM LOST DATA
+OR BUSINESS INTERRUPTION RESULTING FROM THE USE OR INABILITY TO ACCESS AND
+USE THE PLATFORM OR THE CONTENT, EVEN IF WE HAVE BEEN ADVISED OF THE
+POSSIBILITY OF SUCH DAMAGES; AND (II) ANY DIRECT DAMAGES NOT ATTRIBUTABLE TO
+PERSONAL INJURIES THAT YOU MAY SUFFER AS A RESULT OF YOUR USE OF THE
+PLATFORM OR THE CONTENT SHALL BE LIMITED TO FIFTY UNITED STATES DOLLARS (US
+$50).<br>
+SOME JURISDICTIONS, INCLUDING THE STATE OF NEW JERSEY, DO NOT ALLOW THE
+EXCLUSION OF CERTAIN WARRANTIES. THEREFORE, SOME OF THE ABOVE LIMITATIONS
+ON WARRANTIES IN THIS SECTION MAY NOT APPLY TO YOU.
+NOTHING IN THESE TERMS OF USE SHALL AFFECT ANY NON-WAIVABLE STATUTORY
+RIGHTS THAT APPLY TO YOU.</p>
+
+                                <li style="font-size: 2.35714286em; font-weight: 500; padding-top: 5%; color: black;">
+                                    <p>EXTERNAL SITES</p>
+                                </li>
+
+                                <p>The Platform may contain links to third-party websites (“External Sites”). If the Platform contains any
+such links, they are provided solely as a convenience to you and not as an endorsement by us of the content
+on such External Sites. The content of such External Sites is developed and provided by others. You
+should contact the site administrator or webmaster for those External Sites if you have any concerns
+regarding such links or any content located on such External Sites. We are not responsible for the content
+of any linked External Sites and do not make any representations regarding the content or accuracy of
+materials on such External Sites. You should take precautions when downloading files from all websites to
+<br>
+protect your computer from viruses and other destructive programs. If you decide to access linked External
+Sites, you do so at your own risk.</p>
+
+                                <li style="font-size: 2.35714286em; font-weight: 500; padding-top: 5%; color: black;">
+                                    <p>INDEMNIFICATION</p>
+                                </li>
+
+                                <p>You agree to defend, indemnify, and hold us and our owners, members, officers, directors, employees,
+agents, successors, licensees, licensors, and assigns harmless from and against any damages, liabilities,
+losses, expenses, claims, actions, and/or demands, including, without limitation, reasonable legal and
+accounting fees, arising or resulting from: (i) your breach of this Agreement; (ii) your misuse of the
+Content or the Platform; and/or (iii) your violation of any third-party rights, including without limitation
+any copyright, trademark, property, publicity, or privacy right. We shall provide notice to you of any such
+claim, suit, or proceeding and shall assist you, at your expense, in defending any such claim, suit, or
+proceeding. We reserve the right to assume the exclusive defense and control (at your expense) of any
+matter that is subject to indemnification under this section. In such case, you agree to cooperate with any
+reasonable requests assisting our defense of such matter.</p>
+
+
+                                
+                                <li style="font-size: 2.35714286em; font-weight: 500; padding-top: 5%; color: black;">
+                                    <p>COMPLIANCE WITH APPLICABLE LAWS</p>
+                                </li>
+
+                                <p>The Platform is based in the United States. We make no claims concerning whether the Content may be
+viewed or be appropriate for use outside of the United States. If you access the Platform or the Content
+from outside of the United States, you do so at your own risk. Whether inside or outside of the United
+States, you are solely responsible for ensuring compliance with the laws of your specific jurisdiction.</p>
+
+                                
+                                <li style="font-size: 2.35714286em; font-weight: 500; padding-top: 5%; color: black;">
+                                    <p>TERMINATION OF THE AGREEMENT</p>
+                                </li>
+
+                                <p>We reserve the right, in our sole discretion, to restrict, suspend, or terminate this Agreement and your
+access to all or any part of the Platform, at any time and for any reason without prior notice or liability. We
+reserve the right to change, suspend, or discontinue all or any part of the Platform at any time without prior
+notice or liability. Sections 3-15 shall survive the termination of this Agreement.</p>
+                                
+                                <li style="font-size: 2.35714286em; font-weight: 500; padding-top: 5%; color: black;">
+                                    <p>CONTROLLING LAW</p>
+                                </li>
+
+                                <p>This Agreement and any action related thereto will be governed by the laws of the State of Delaware
+without regard to its conflict of laws provisions.</p>
+
+            
+                                 <li style="font-size: 2.35714286em; font-weight: 500; padding-top: 5%; color: black;">
+                                    <p>BINDING ARBITRATION</p>
+                                </li>
+
+                                <p>In the event of a dispute arising under or relating to this Agreement, the Content, or the Platform (each, a
+“Dispute”), either party may elect to finally and exclusively resolve the dispute by binding arbitration
+governed by the Federal Arbitration Act (“FAA”). Any election to arbitrate, at any time, shall be final and
+binding on the other party. IF EITHER PARTY CHOOSES ARBITRATION, NEITHER PARTY SHALL
+HAVE THE RIGHT TO LITIGATE SUCH CLAIM IN COURT OR TO HAVE A JURY TRIAL,
+EXCEPT EITHER PARTY MAY BRING ITS CLAIM IN ITS LOCAL SMALL CLAIMS COURT, IF
+PERMITTED BY THAT SMALL CLAIMS COURT RULES AND IF WITHIN SUCH COURT’S
+JURISDICTION. ARBITRATION IS DIFFERENT FROM COURT, AND DISCOVERY AND APPEAL
+RIGHTS MAY ALSO BE LIMITED IN ARBITRATION. All disputes will be resolved before a neutral
+arbitrator selected jointly by the parties, whose decision will be final, except for a limited right of appeal
+under the FAA. The arbitration shall be commenced and conducted by JAMS pursuant to its then current
+Comprehensive Arbitration Rules and Procedures and in accordance with the Expedited Procedures in
+those rules, or, where appropriate, pursuant to JAMS’ Streamlined Arbitration Rules and Procedures. All
+applicable JAMS’ rules and procedures are available at the JAMS website www.jamsadr.com. Each party
+<br>
+will be responsible for paying any JAMS filing, administrative, and arbitrator fees in accordance with
+JAMS rules. Judgment on the arbitrator’s award may be entered in any court having jurisdiction. This
+clause shall not preclude parties from seeking provisional remedies in aid of arbitration from a court of
+appropriate jurisdiction. The arbitration may be conducted in person, through the submission of
+documents, by phone, or online. If conducted in person, the arbitration shall take place in the United States
+county where you reside. The parties may litigate in court to compel arbitration, to stay a proceeding
+pending arbitration, or to confirm, modify, vacate, or enter judgment on the award entered by the arbitrator.
+The parties shall cooperate in good faith in the voluntary and informal exchange of all non-privileged
+documents and other information (including electronically stored information) relevant to the Dispute
+immediately after commencement of the arbitration. As set forth in Section 13 below, nothing in this
+Agreement will prevent us from seeking injunctive relief in any court of competent jurisdiction as
+necessary to protect our proprietary interests.</p>
+
+                                <li style="font-size: 2.35714286em; font-weight: 500; padding-top: 5%; color: black;">
+                                    <p>CLASS ACTION WAIVER</p>
+                                </li>
+
+                                <p>You agree that any arbitration or proceeding shall be limited to the Dispute between us and you
+individually. To the full extent permitted by law, (i) no arbitration or proceeding shall be joined with any
+other; (ii) there is no right or authority for any Dispute to be arbitrated or resolved on a class action-basis or
+to utilize class action procedures; and (iii) there is no right or authority for any Dispute to be brought in a
+purported representative capacity on behalf of the general public or any other persons. YOU AGREE
+THAT YOU MAY BRING CLAIMS AGAINST US ONLY IN YOUR INDIVIDUAL CAPACITY AND
+NOT AS A PLAINTIFF OR CLASS MEMBER IN ANY PURPORTED CLASS OR REPRESENTATIVE
+PROCEEDING.</p>
+
+                                <li style="font-size: 2.35714286em; font-weight: 500; padding-top: 5%; color: black;">
+                                    <p>EQUITABLE RELIEF</p>
+                                </li>
+
+                                <p>You acknowledge and agree that in the event of a breach or threatened violation of our intellectual property
+rights and confidential and proprietary information by you, we will suffer irreparable harm and will
+therefore be entitled to injunctive relief to enforce this Agreement. We may, without waiving any other
+remedies under this Agreement, seek from any court having jurisdiction any interim, equitable, provisional,
+or injunctive relief that is necessary to protect our rights and property pending the outcome of the
+arbitration referenced above. You hereby irrevocably and unconditionally consent to the personal and
+subject matter jurisdiction of the federal and state courts in the State of Delaware and he State of New York
+for purposes of any such action by us.</p>
+
+                                <li style="font-size: 2.35714286em; font-weight: 500; padding-top: 5%; color: black;">
+                                    <p>MISCELLANEOUS</p>
+                                </li>
+
+                                <p>Our failure to act on or enforce any provision of the Agreement shall not be construed as a waiver of that
+provision or any other provision in this Agreement. No waiver shall be effective against us unless made in
+writing, and no such waiver shall be construed as a waiver in any other or subsequent instance. Except as
+expressly agreed by us and you in writing, this Agreement constitutes the entire Agreement between you
+and us with respect to the subject matter, and supersedes all previous or contemporaneous agreements,
+whether written or oral, between the parties with respect to the subject matter. The section headings are
+provided merely for convenience and shall not be given any legal import. This Agreement will inure to the
+benefit of our successors, assigns, licensees, and sublicensees.</p>
+                            </ol>
+                        </div>
+                        
+                    </div>
+                    <!--end of row-->
+                </div>
+                <!--end of container-->
+            </section>
+
+
+
+            <footer style="background-color: #e2e2e2;" class="footer-6 unpad--bottom">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xs-12 col-md-3 col-lg-2 text-center">
+                            <a href="/">
+                                <img class="footer-img-xs" src="{% static 'img/logo2.png' %}">
+                            </a>
+                        </div>
+                        <div class="col-xs-12 col-md-9 col-lg-10 text-center-xs">
+                            <h2 class="text-center-xs" style="color: #4E1E24; font-weight: 500;">Find Dope Busineses in Your Community</h2>
+                            <a style="margin-top:10px; background-color: #ececec; border-color: #4e1e24; border-radius: 30px; font-size: 18px;" class="btn btn--sm btn--primary type--uppercase" href="https://docs.google.com/forms/d/e/1FAIpQLSfdqcO5yc06j48fZdQEo5iFSDjnIk2VL5hYY-a73bPKlTSF4A/viewform?vc=0&c=0&w=1&flr=0" target="_blank">
+                                        <span style="color: #4e1e24;" class="btn__text cstm">
+                                            Feedback
+                                        </span>
+                            </a>
+                            
+                            <a style="margin-top:10px; background-color: #ececec; border-color: #4e1e24; border-radius: 30px; font-size: 18px;" class="btn btn--sm btn--primary type--uppercase" href="https://docs.google.com/forms/d/e/1FAIpQLScpPW5K7gadxnMlMTxAQ1D0tOaLx-p7erCqGXRzyAs3_xwRMg/viewform?vc=0&c=0&w=1&flr=0&usp=mail_form_link" target="_blank">
+                                        <span style="color: #4E1E24;" class="btn__text cstm">
+                                            Add business
+                                        </span>
+                            </a>
+
+                            <div class="row mt--2">
+                                <div class="col-6 col-md-4 col-lg-4 cstm-footer">
+                                    <h6>Company</h6>
+                                    
+                                    <p><a href="#0">About us</a></p>
+                                    <p><a href="#0">Blog</a></p>
+                                    <p><a target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLScNrBzv6UEHi1c7Hj0gNIVF7obiEQnO-kAp9KktkEpabI0SnQ/viewform?vc=0&c=0&w=1&flr=0&gxids=7628">Volunteer</a></p>
+                                    <p><a href="#0">Donate</a></p>
+                                </div>
+                                <div class="col-6 col-md-4 col-lg-4 cstm-footer">
+                                    <h6 class="">Browse</h6>
+
+                                    <p><a href="categories/restaurants">Business listings</a></p>
+                                    <p><a href="https://store.bossingup.net">Store</a></p>
+                                </div>
+
+                                <div class="col-12 col-md-4 col-lg-4 cstm-footer">
+                                    <h6 class="#0">Contact us</h6>
+
+                                    <p><a href="mailto:bossingupbiz@gmail.com">bossingupbiz@gmail.com</a></p>
+                                    
+                                    <ul class="social-list list-inline list--hover">
+                                        <li><a href="https://twitter.com/bossingupbiz?lang=en" target="_blank"><i class="socicon socicon-twitter icon icon--sm"></i></a></li>
+                                        <li><a href="https://www.facebook.com/BossingUpbiz/" target="_blank"><i class="socicon socicon-facebook icon icon--sm"></i></a></li>
+                                        <li><a href="https://www.instagram.com/bossingupbiz/" target="_blank"><i class="socicon socicon-instagram icon icon--sm"></i></a></li>
+                                    </ul>
+                                </div>
+                            </div> 
+                        </div>
+                    </div>
+                    <!--end of row-->
+                </div>
+                <!--end of container-->
+                <div class="footer__lower text-center-xs">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <span class="">&copy;
+                                    <span class="update-year"></span> Bossing Up Inc &mdash; All Rights Reserved</span>
+                            </div>
+
+                            <div class="col-md-6 text-right">
+                                <a style="padding-right: 12px;" href="/terms_of_use"><i>Terms of use</i></a>
+                                <a href="/privacy_policy"><i>Privacy Policy</i></a>
+                            </div>
+                            
+                        </div>
+                        <!--end of row-->
+                    </div>
+                    <!--end of container-->
+                </div>
+            </footer>
+        </div>
+        <!--<div class="loader"></div>-->
+        <a class="back-to-top inner-link" href="#start" data-scroll-class="100vh:active">
+            <i class="stack-interface stack-up-open-big"></i>
+        </a>
+        <script src="{% static 'js/jquery-3.1.1.min.js' %}"></script>
+        <script src="{% static 'js/flickity.min.js' %}"></script>
+        <script src="{% static 'js/easypiechart.min.js' %}"></script>
+        <script src="{% static 'js/parallax.js' %}"></script>
+        <script src="{% static 'js/typed.min.js' %}"></script>
+        <script src="{% static 'js/datepicker.js' %}"></script>
+        <script src="{% static 'js/isotope.min.js' %}"></script>
+        <script src="{% static 'js/ytplayer.min.js' %}"></script>
+        <script src="{% static 'js/lightbox.min.js' %}"></script>
+        <script src="{% static 'js/granim.min.js' %}"></script>
+        <script src="{% static 'js/jquery.steps.min.js' %}"></script>
+        <script src="{% static 'js/countdown.min.js' %}"></script>
+        <script src="{% static 'js/twitterfetcher.min.js' %}"></script>
+        <script src="{% static 'js/spectragram.min.js' %}"></script>
+        <script src="{% static 'js/smooth-scroll.min.js' %}"></script>
+        
+        <script src="{% static 'js/maps.js' %}"></script>
+        <script> (function() { var qs,js,q,s,d=document, gi=d.getElementById, ce=d.createElement, gt=d.getElementsByTagName, id="typef_orm_share", b="https://embed.typeform.com/"; if(!gi.call(d,id)){ js=ce.call(d,"script"); js.id=id; js.src=b+"embed.js"; q=gt.call(d,"script")[0]; q.parentNode.insertBefore(js,q) } })() </script>
+        <script src="{% static 'js/scripts.js' %}"></script>
+        
+    </body>
+</html>

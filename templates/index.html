@@ -1,0 +1,337 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content_home %}
+
+<!-- Preloader -->
+<div id="preloader">
+    <div class="medica-load"></div>
+    <img src="{% static 'img/logo2.png' %}" alt="logo">
+</div>
+
+<div class="nav-container">
+    <div>
+        <div class="bar bar--sm visible-xs bg-color-cstm-xs">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-7">
+                        <a href="/">
+                            <img style="width: 40%;" src="{% static 'img/logo2.png' %}">
+                        </a>
+                    </div>
+                    <div class="col-xs-5 text-right">
+                        <a href="#" class="hamburger-toggle" data-toggle-class="#menu1;hidden-xs hidden-sm"> <i class="icon icon--sm stack-interface stack-menu"></i> </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <nav style="background-color: #4E1E24; padding: 0.25714286em 0;" id="menu1" class="bar bar-1 hidden-xs">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3 col-md-3 hidden-xs">
+                        <div class="bar__module">
+                            <a href="/">
+                                <img style="width: 35%;" src="{% static 'img/logo2.png' %}">
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 text-left-xs text-left-sm">
+                        <p class="text-center hidden-sm hidden-xs" style="color: white; font-weight: 700; font-size: 30px; padding-top: 30px;">Black Owned Businesses</p>
+                    </div>
+                    <div class="col-lg-3 col-md-3">
+                        <ul class="menu-horizontal text-left">
+                            <li style="font-family: 'Montserrat'; padding-top: 23px;" class="dropdown">
+                                        <span style="font-weight: 800; font-size: 1.157142857142857em; color: #fff; opacity: 1;" class="dropdown__trigger">Categories</span>
+                                        <div class="dropdown__container">
+                                            <div class="container">
+                                                <div class="row">
+                                                    <div class="dropdown__content col-lg-4 col-md-4">
+                                                        <ul class="menu-vertical">
+                                                            <li class="dropdown">
+                                                                <a href="categories/clothing">
+                                                                    <span class="dropdown__trigger">Clothing</span>
+                                                                </a>
+                                                            </li>
+                                                            <li class="dropdown">
+                                                                <a href="categories/accessories">
+                                                                    <span class="dropdown__trigger">Accessories</span>
+                                                                </a>
+                                                            </li>
+                                                            <li class="dropdown">
+                                                                <a href="categories/restaurants">
+                                                                    <span class="dropdown__trigger">Restaurants</span>
+                                                                </a>
+                                                            </li>
+                                                            <li class="dropdown">
+                                                                <a href="categories/clubs_bars_lounges">
+                                                                    <span class="dropdown__trigger">Clubs, bars & Lounges</span>
+                                                                </a>
+                                                            </li>
+                                                            <li class="dropdown">
+                                                                <a href="categories/beauty_services">
+                                                                    <span class="dropdown__trigger">Beauty Serives (salons & barbers)</span>
+                                                                </a>
+                                                            </li>
+                                                            <li class="dropdown">
+                                                                <a href="categories/home_cleaning">
+                                                                    <span class="dropdown__trigger">Home & Cleaning Services</span>
+                                                                </a>
+                                                            </li>
+                                                            <li class="dropdown">
+                                                                <a href="professional_services">
+                                                                    <span class="dropdown__trigger">Professional Services</span>
+                                                                </a>
+                                                            </li>
+                                                            <li class="dropdown">
+                                                                <a href="categories/construction_services">
+                                                                    <span class="dropdown__trigger">Construction & Auto Services</span>
+                                                                </a>
+                                                            </li>
+                                                            <li class="dropdown">
+                                                                <a href="categories/coffee_tea_joints">
+                                                                    <span class="dropdown__trigger">Coffee and Tea</span>
+                                                                </a>
+                                                            </li>
+                                                            <li class="dropdown">
+                                                                <a href="categories/grocery_store">
+                                                                    <span class="dropdown__trigger">Grocery Store</span>
+                                                                </a>
+                                                            </li>
+                                                            <li class="dropdown">
+                                                                <a href="categories/childcare">
+                                                                    <span class="dropdown__trigger">Childcare</span>
+                                                                </a>
+                                                            </li>
+                                                            <li class="dropdown">
+                                                                <a href="categories/health_and_wellness">
+                                                                    <span class="dropdown__trigger">Health & Wellness</span>
+                                                                </a>
+                                                            </li>
+
+                                                        </ul>
+                                                    </div>
+                                                    <!--end dropdown content-->
+                                                </div>
+                                                <!--end row-->
+                                            </div>
+                                        </div>
+                                        <!--end dropdown container-->
+                                    </li>
+                                </ul>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </div>
+</div>
+<div class="main-container">
+    <section class="cover text-center bg--secondary cstm_img">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-xs-12 col-md-8 col-lg-6">
+                    <h1 style="font-weight: 900; color: #fff;">Search for black owned businesses in <a style="color: white; text-decoration: underline; font-weight: 900;" class="typeform-share" href="https://form.typeform.com/to/KrtxDhYA" data-mode="popup" target="_blank">New York</a></h1>  
+                </div>
+                <div class="col-xs-12 col-md-12 mt--2">
+                    <form class="justify-content-center main_form" novalidate autocomplete="off" action='/search' method="get">
+                        
+                        {% for field in businessFilter.form.visible_fields %}
+                            <div class="col-sm-12 col-md-4">
+                                {{ field }}
+                            </div>
+                        {% endfor %}
+                            <div class="col-sm-12 col-md-4">
+                                <input style="color: #c9c9c9;" type="text" name="location" placeholder="Location in New York" id="id_location">
+                            </div>
+                            <div style="display: none;">
+                                {{ form }}
+                            </div>
+
+                            <div class="col-sm-12 col-md-4">
+                                <button type="submit" style="background-color: #ffc107; border-color: #4E1E24; font-size: 18px;" class="btn btn--primary">SEARCH <i style="color: white; padding-left: 10px;" class="fas fa-search"></i></button>  
+                            </div>
+                        
+                        <!-- <div class="col-lg-4 col-md-4"> 
+                            <div class="input-select"> 
+                                <select style="font-size: 20px;">
+                                    <option selected="selected" value="Default">Select business category</option>
+                                    <option value="option1">Clothing</option>
+                                    <option value="option2">Accessories</option>
+                                    <option value="option1">Restaurants</option>
+                                    <option value="option2">Clubs, Bars & Lounges</option>
+                                    <option value="option1">Beauty Services, Salons & Barbers</option>
+                                    <option value="option2">Home & Cleaning Services</option>
+                                    <option value="option1">Professional Services</option>
+                                    <option value="option2">Construction & Auto Services</option>
+                                    <option value="option1">Coffee & Tea</option>
+                                    <option value="option2">Childcare</option>
+                                    <option value="option1">Grocery Store</option>
+                                    <option value="option2">Drinks & Liquor</option>
+                                    <option value="option1">Health & Wellness</option>
+                                    <option value="option2">Other</option>
+                                </select> 
+                            </div> 
+                        </div>
+                        <div class="col-lg-3 col-md-4"> 
+                            <input style="font-size: 20px;" class="validate-required" type="text" name="search_location" placeholder="Location"> 
+                        </div> -->
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <style>
+        .clr-white {
+            color: white;
+        }
+    </style>
+
+    <section class="text-center">
+        <div class="container cstm-width-60">
+
+            <div class="row">
+                <div class="col-xs-6 col-md-4">
+                    <a href="categories/clothing" class="block">
+                        <div class="feature boxed boxed--border border--round" style="background-color: #d38a19;"> <i style="color: #fff;" class="fas fa-tshirt fa-3x"></i> <span class="h5 clr-white">Clothing</span> </div>
+                    </a>
+                </div>
+                <div class="col-xs-6 col-md-4">
+                    <a href="categories/accessories" class="block">
+                        <div class="feature boxed boxed--border border--round" style="background-color: #3d7725;"> <i style="color: #fff;" class="fas fa-headphones-alt fa-3x"></i> <span class="h5 clr-white">Accessories</span> </div>
+                    </a>
+                </div>
+                <div class="col-xs-6 col-md-4">
+                    <a href="categories/restaurants" class="block">
+                        <div class="feature boxed boxed--border border--round" style="background-color: #8a5d42;"> <i style="color: #fff;" class="fas fa-utensils fa-3x"></i> <span class="h5 clr-white">Restaurants</span> </div>
+                    </a>
+                </div>
+                <div class="col-xs-6 col-md-4">
+                    <a href="categories/clubs_bars_lounges" class="block">
+                        <div class="feature boxed boxed--border border--round" style="background-color: #2a8694;"> <i style="color: #fff;" class="fas fa-glass-martini-alt fa-3x"></i> <span class="h5 clr-white">Clubs, Bars & Lounges</span> </div>
+                    </a>
+                </div>
+                <div class="col-xs-6 col-md-4">
+                    <a href="categories/beauty_services" class="block">
+                        <div class="feature boxed boxed--border border--round" style="background-color: #ab2871;"> <i style="color: #fff;" class="fas fa-cut fa-3x"></i> <span class="h5 clr-white">Beauty Services, Salons & Barbers</span> </div>
+                    </a>
+                </div>
+                <div class="col-xs-6 col-md-4">
+                    <a href="/categories/home_cleaning" class="block">
+                        <div class="feature boxed boxed--border border--round" style="background-color: #9caaec;"> <i style="color: #fff;" class="fas fa-broom fa-3x"></i> <span class="h5 clr-white">Home & Cleaning Services</span> </div>
+                    </a>
+                </div>
+                <div class="col-xs-6 col-md-4">
+                    <a href="categories/professional_services" class="block">
+                        <div class="feature boxed boxed--border border--round" style="background-color: #658fcb;"> <i style="color: #fff;" class="fas fa-briefcase fa-3x"></i> <span class="h5 clr-white">Professional Services</span> </div>
+                    </a>
+                </div>
+                <div class="col-xs-6 col-md-4">
+                    <a href="categories/construction_services" class="block">
+                        <div class="feature boxed boxed--border border--round" style="background-color: #738184;"> <i style="color: #fff;" class="fas fa-hard-hat fa-3x"></i> <span class="h5 clr-white">Construction & Auto Services</span> </div>
+                    </a>
+                </div>
+                <div class="col-xs-6 col-md-4">
+                    <a href="categories/coffee_tea_joints" class="block">
+                        <div class="feature boxed boxed--border border--round" style="background-color: #8e774e;"> <i style="color: #fff;" class="fas fa-mug-hot fa-3x"></i> <span class="h5 clr-white">Coffee & Tea</span> </div>
+                    </a>
+                </div>
+                <div class="col-xs-6 col-md-4">
+                    <a href="categories/grocery_store" class="block">
+                        <div class="feature boxed boxed--border border--round" style="background-color: #28a745;"> <i style="color: #fff;" class="fas fa-store-alt fa-3x"></i> <span class="h5 clr-white">Grocery Store</span> </div>
+                    </a>
+                </div>
+                <div class="col-xs-6 col-md-4">
+                    <a href="categories/childcare" class="block">
+                        <div class="feature boxed boxed--border border--round" style="background-color: #2671c3;"> <i style="color: #fff;" class="fas fa-baby fa-3x"></i> <span class="h5 clr-white">Childcare</span> </div>
+                    </a>
+                </div>
+                <div class="col-xs-6 col-md-4">
+                    <a href="categories/health_and_wellness" class="block">
+                        <div class="feature boxed boxed--border border--round" style="background-color: #ffc107;"> <i style="color: #fff;" class="fas fa-dumbbell fa-3x"></i> <span class="h5 clr-white">Health & Wellness</span> </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <footer style="background-color: #d3d3d3; padding-top: 35px; padding-bottom: 15px!important;" class="text-center-xs space--xs">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12 text-center text-center-xs">
+    
+                    <a href="/">
+                        <img style="width: 15%;" src="{% static 'img/logo2.png' %}">
+                    </a>
+    
+                    <h2 class="mgn-cstm-footer">Find Dope Businesses In Your Community</h2>
+    
+                    <div class="row">
+                        <div class="col-xs-6 text-right">
+                            <a href="https://docs.google.com/forms/d/e/1FAIpQLSfdqcO5yc06j48fZdQEo5iFSDjnIk2VL5hYY-a73bPKlTSF4A/viewform?vc=0&c=0&w=1&flr=0" target="_blank" class="footer-cstm-btn">Feedback</a>
+                            <p class="mgn-cstm-footer"><a href="https://www.bossingup.net">Bossingup.net</a></p>
+                        </div>
+                        <div class="col-xs-6 text-left">
+                            <a href="https://docs.google.com/forms/d/e/1FAIpQLScpPW5K7gadxnMlMTxAQ1D0tOaLx-p7erCqGXRzyAs3_xwRMg/viewform?vc=0&c=0&w=1&flr=0&usp=mail_form_link" target="_blank" class="footer-cstm-btn">Add business</a>
+                            <p class="mgn-cstm-footer"><a href="mailto:bossingupbiz@gmail.com">bossingupbiz@gmail.com</a></p>
+                        </div>
+                    </div>
+                    <br>
+                    <ul class="social-list list-inline list--hover">
+                        <li><a href="https://twitter.com/bossingupbiz?lang=en" target="_blank"><i class="socicon socicon-twitter icon icon--sm"></i></a></li>
+                        <li><a href="https://www.facebook.com/BossingUpbiz/" target="_blank"><i class="socicon socicon-facebook icon icon--sm"></i></a></li>
+                        <li><a href="https://www.instagram.com/bossingupbiz/" target="_blank"><i class="socicon socicon-instagram icon icon--sm"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div style="margin-top: 1em;" class="row">
+                <div class="col-xs-5 col-sm-5 text-right text-left-xs">
+                    <span class="type--fine-print">© Bossing Up, Inc. <span class="update-year"></span></span>
+                </div>
+                <div class="col-xs-4 col-sm-3 text-center">
+                    <span class="type--fine-print"> Privacy Policy </span>
+                </div>
+                <div class="col-xs-2 col-sm-3 text-left">
+                    <span class="type--fine-print"> Legal </span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- <script type="text/javascript">
+        function initialize() {
+            var input = document.getElementById('searchTextField');
+            var autocomplete = new google.maps.places.Autocomplete(input);
+            google.maps.event.addListener(autocomplete, 'place_changed', function () {
+                var place = autocomplete.getPlace();
+                document.getElementById('location').value = place.name;
+                document.getElementById('locationLat').value = place.geometry.location.lat();
+                document.getElementById('locationLng').value = place.geometry.location.lng();
+                //alert("This function is working!");
+                //alert(place.name);
+               // alert(place.address_components[0].long_name);
+
+            });
+        }
+        google.maps.event.addDomListener(window, 'load', initialize); 
+    </script> -->
+
+    <!-- <script>
+        ListBusinesses()
+
+        function ListBusinesses() {
+            var url = 'http://127.0.0.1:8000/bizs'
+            fetch(url)
+            .then((resp) => resp.json())
+            .then(function(data){
+                console.log('Data:', data)
+
+                var list = data
+                for (var i in list) {
+
+                }
+            })
+        }
+    </script> -->
+
+{% endblock content_home %}

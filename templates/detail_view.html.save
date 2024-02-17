@@ -1,0 +1,1181 @@
+{% extends 'base.html' %}
+
+{% load humanize %}
+
+{% load static %}
+
+{% load mathfilters %}
+
+{% block content_detail %}
+
+<script src="{% static 'js/jquery-3.1.1.min.js' %}"></script>
+
+<script type="text/javascript">
+
+    // Bearer Token need to call an api request - Find a way of hiding this
+    var token = 'Bearer sKpRyNgOPf73drZ94tdvuZCcuoNYJTjMFAiHhPNKZVqpg7Oc32gmgauhmljQxSuovxOEmnsujVc23cnMDSRNKNlICB8SlM4l3ZiM7ntFk33nZmW8sfTp8PejKEu1X3Yx'
+    
+    // HEROKU open source CORS URL really handy to avoid Cross Site Error
+    var cors_anywhere_url = 'https://cryptic-depths-97908.herokuapp.com'
+    
+    // Custom yelp api urls - From yelp fusion page
+    var yelp_business_search_url = 'https://api.yelp.com/v3/businesses/matches'
+    var yelp_business_reviews_url = 'https://api.yelp.com/v3/businesses'
+
+
+    // Defining the request to get closest matching business to get ID (It is necessary to use the review fetch url)
+    var requestBusiness = {
+        'url': cors_anywhere_url + '/' + yelp_business_search_url,
+        'data': {name: '{{ business.title }}', address1: '{{ business.address }}', city: 'New York', country: 'US', state: 'NY', longitude: '{{ business.longitude }}', latitude: '{{ business.latitude }}'},
+        headers: {'Authorization': token},
+        error: function(jqXHR, textStatus, errorThrown) {
+            console.log('AJAX error, jqXHR = ', jqXHR, ', textStatus = ', textStatus, ', errorThrown = ', errorThrown)
+            document.getElementById('no_business_match').innerHTML = "<h3>No reviews for this business have been found on Yelp</h3><br><br>"
+	    
+	    
+	    {% if business.comments.all < 1 %}
+                console.log("no comments");
+            {% endif %}
+
+            return;	
+	    // Break function indefinetly if fetch fails
+        }
+    }
+
+    // AJAX call
+    $.ajax(requestBusiness)
+        .done(function(response) {
+            // console.log('typeof response = ' + typeof response)
+            // console.log('response = ', response)
+            var get_array = Object.values(response)
+            if (get_array[0] === undefined || get_array[0].length == 0) {
+                console.log('No businesses Found from yelp')
+                document.getElementById('no_business_match').innerHTML = "<h3>No reviews for this business have been found on Yelp</h3><br><br>"
+		return;  // Break function indefinetly if fetch returns 0 results
+
+            } else {
+                var biz_id = (get_array[0][0]).id
+                // console.log(biz_id)
+            }
+
+            // Defining the request to fetch the business's reviews from yelp after successfull business match
+            var requestBusinessReviews = {
+                'url': cors_anywhere_url + '/' + yelp_business_reviews_url + '/' + biz_id + '/reviews',
+                headers : {'Authorization': token},
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log('AJAX error, jqXHR = ', jqXHR, ', textStatus = ', textStatus, ', errorThrown = ', errorThrown)
+                }
+            }
+
+            $.ajax(requestBusinessReviews)
+                .done(function(response) {
+                    // console.log('typeof response = ' + typeof response)
+                    var get_reviews_array = Object.values(response)
+                    var reviews_dic = get_reviews_array[0] 
+                    console.log(reviews_dic)
+
+
+                    // COMMENT 1 FROM YELP - OLDEST
+                    document.getElementById('comment_1_date').innerHTML = reviews_dic[2].time_created
+                    document.getElementById('comment_1_text').innerHTML = reviews_dic[2].text
+                    document.getElementById('comment_1_rating').style.width = (reviews_dic[2].rating * 20) + "%" 
+                    document.getElementById('comment_1_user').innerHTML = reviews_dic[2].user.name
+                    document.getElementById("comment_1_user_image").src = reviews_dic[2].user.image_url
+
+                    // COMMENT 2 FROM YELP
+                    document.getElementById('comment_2_date').innerHTML = reviews_dic[1].time_created
+                    document.getElementById('comment_2_text').innerHTML = reviews_dic[1].text
+                    document.getElementById('comment_2_rating').style.width = (reviews_dic[1].rating * 20) + "%" 
+                    document.getElementById('comment_2_user').innerHTML = reviews_dic[1].user.name
+                    document.getElementById("comment_2_user_image").src = reviews_dic[1].user.image_url
+
+                    // COMMENT 3 FROM YELP - lATEST
+                    document.getElementById('comment_3_date').innerHTML = reviews_dic[0].time_created
+                    document.getElementById('comment_3_text').innerHTML = reviews_dic[0].text
+                    document.getElementById('comment_3_rating').style.width = (reviews_dic[0].rating * 20) + "%" 
+                    document.getElementById('comment_3_user').innerHTML = reviews_dic[0].user.name
+                    document.getElementById("comment_3_user_image").src = reviews_dic[0].user.image_url
+
+                    // REVIEW RATING AVERAGE
+                    var rating_total = reviews_dic[0].rating + reviews_dic[1].rating + reviews_dic[2].rating
+                    var avg_rating_yelp = (rating_total/3).toFixed(2)
+                                    
+                    
+
+                    // Total average
+                    var pro_avg =`{{ business.get_rating_avg }}`
+                    if (pro_avg < 1) {
+                        var total_avg = (parseFloat(avg_rating_yelp)).toFixed(2)
+                    } else {
+                        var total_avg = ((parseFloat(avg_rating_yelp) + parseFloat(pro_avg))/2).toFixed(2)
+                    }
+
+
+                    var all_ratings_count = parseFloat(reviews_dic.length) + parseFloat(`{{ business.approved_comments.count }}`)
+
+                    var rating_total_percentage = total_avg * 20
+
+                    // console.log(rating_total_percentage)
+
+
+                    console.log(all_ratings_count)
+
+                    document.getElementById('total_rating_avg').innerHTML = total_avg
+                    document.getElementById('rating_total_count').innerHTML = all_ratings_count
+                    document.getElementById('stars_percentage').style.width = Math.round(rating_total_percentage) + "%"
+                })
+        })
+</script>
+
+<script type="text/javascript">
+    function initMap() {
+      var map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 11,
+        center: {lat: 40.730610, lng: -73.935242}
+      });
+
+      infoWindow = new google.maps.InfoWindow;
+
+      // Try HTML5 geolocation.
+        $(document).ready(function() {
+          $('#geolocate-custom').click(function() { 
+            // Try HTML5 geolocation.
+            if (navigator.geolocation) {
+              navigator.geolocation.getCurrentPosition(function(position) {
+                var pos = {
+                  lat: position.coords.latitude,
+                  lng: position.coords.longitude
+                };
+
+                infoWindow.setPosition(pos);
+                infoWindow.setContent('You are here!!!');
+                infoWindow.open(map);
+              }, function() {
+                handleLocationError(true, infoWindow, map.getCenter());
+              });
+            } else {
+              // Browser doesn't support Geolocation
+              handleLocationError(false, infoWindow, map.getCenter());
+            }
+          });
+        });
+
+      setMarkers(map);
+    }
+
+
+    function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+        infoWindow.setPosition(pos);
+        infoWindow.setContent(browserHasGeolocation ?
+                              'Error: The Geolocation service failed.' :
+                              'Error: Your browser doesn\'t support geolocation.');
+        infoWindow.open(map);
+    }
+
+
+    function setMarkers(map) {
+      // Adds markers to the map.
+
+      // Marker sizes are expressed as a Size of X,Y where the origin of the image
+      // (0,0) is located in the top left of the image.
+
+      // Origins, anchor positions and coordinates of the marker increase in the X
+      // direction to the right and in the Y direction down.
+      
+      // Shapes define the clickable region of the icon. The type defines an HTML
+      // <area> element 'poly' which traces out a polygon as a series of X,Y points.
+      // The final coordinate closes the poly by connecting to the first coordinate.
+      var shape = {
+        coords: [40, 1, 1, 1, 1, 40, 48, 51],
+        type: 'poly'
+      };
+
+    var marker = new google.maps.Marker({
+      position: {lat: {{ business.latitude }}, lng: {{ business.longitude }} },
+      map: map,
+      shape: shape,
+      title: `{{ business.title }}`,
+      url: '/business/{{ business.id }}'
+    });
+    
+    google.maps.event.addListener(marker, 'click', function() {
+        console.log("here");
+        window.location.href = this.url;
+    });
+      
+    }
+</script>
+
+<div class="nav-container">
+    <div>
+        <div class="bar bar--sm visible-xs bg-color-cstm-xs">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-7">
+                        <a href="/">
+                            <img style="width: 35%;" src="{% static 'img/logo2.png' %}">
+                        </a>
+                    </div>
+                    <!-- <div class="col-xs-5 text-right">
+                        <a href="#" class="hamburger-toggle" data-toggle-class="#menu1;hidden-xs hidden-sm"> <i class="icon icon--sm stack-interface stack-menu"></i> </a>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+
+        {% for message in messages %}
+            {% if "exists" in message.tags %}
+                <div style="position: fixed; width: 70%; margin-top: -4px; border-radius: 4px; z-index: 999; left: 50%; transform: translateX(-50%);" class="alert alert-info alert-dismissible">
+                  <a href="#" style="right: 10px; font-size: 26px;" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                  <strong>Info!</strong>
+                    <span>{{ message }}</span>
+                </div>
+            {% endif %}    
+        {% endfor %}
+
+        {% for message in messages %}
+            {% if "successfully" in message.tags %}
+                <div style="position: fixed; width: 70%; margin-top: -4px; border-radius: 4px; z-index: 999; left: 50%; transform: translateX(-50%);" class="alert alert-success alert-dismissible">
+                  <a href="#" style="right: 10px; font-size: 26px;" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                  <strong>Success!</strong>
+                    <span>{{ message }}</span>
+                </div>
+            {% endif %}    
+        {% endfor %}
+
+
+        {% for message in messages %}
+            {% if "check" in message.tags %}
+                <div style="position: fixed; width: 70%; margin-top: -4px; border-radius: 4px; z-index: 999; left: 50%; transform: translateX(-50%);" class="alert alert-warning alert-dismissible">
+                  <a href="#" style="right: 10px; font-size: 26px;" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                  <strong>Submission successful!</strong>
+                    <span>{{ message }}</span>
+                </div>
+            {% endif %}    
+        {% endfor %}
+
+
+        <nav style="background-color: #4E1E24; padding: 0.25714286em 0;" id="menu1" class="bar bar-1 hidden-xs">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3 col-md-3 hidden-xs">
+                        <div class="bar__module">
+                            <a href="/">
+                                <img style="width: 35%;" src="{% static 'img/logo2.png' %}">
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-8 text-left-xs text-left-sm">
+                        <p class="text-center hidden-sm hidden-xs" style="color: white; font-weight: 700; font-size: 30px; padding-top: 30px;">Black Owned Businesses</p>
+                    </div>
+                    <div class="col-lg-3 col-md-3">
+                        <ul class="menu-horizontal text-left">
+                            <li style="font-family: 'Montserrat'; padding-top: 23px;" class="dropdown">
+                                        <span style="font-weight: 800; font-size: 1.157142857142857em; color: #fff; opacity: 1;" class="dropdown__trigger">Categories</span>
+                                        <div class="dropdown__container">
+                                            <div class="container">
+                                                <div class="row">
+                                                    <div class="dropdown__content col-lg-4 col-md-4">
+                                                        <ul class="menu-vertical">
+                                                            <li class="dropdown">
+                                                                <a href="categories/clothing">
+                                                                    <span class="dropdown__trigger">Clothing</span>
+                                                                </a>
+                                                            </li>
+                                                            <li class="dropdown">
+                                                                <a href="categories/accessories">
+                                                                    <span class="dropdown__trigger">Accessories</span>
+                                                                </a>
+                                                            </li>
+                                                            <li class="dropdown">
+                                                                <a href="categories/restaurants">
+                                                                    <span class="dropdown__trigger">Restaurants</span>
+                                                                </a>
+                                                            </li>
+                                                            <li class="dropdown">
+                                                                <a href="categories/clubs_bars_lounges">
+                                                                    <span class="dropdown__trigger">Clubs/Bars/Lounges</span>
+                                                                </a>
+                                                            </li>
+                                                            <li class="dropdown">
+                                                                <a href="categories/beauty_services">
+                                                                    <span class="dropdown__trigger">Beauty Services, Salons & Barbers</span>
+                                                                </a>
+                                                            </li>
+                                                            <li class="dropdown">
+                                                                <a href="categories/beauty_supplies">
+                                                                    <span class="dropdown__trigger">Beauty Supplies</span>
+                                                                </a>
+                                                            </li>
+                                                            <li class="dropdown">
+                                                                <a href="categories/home_cleaning">
+                                                                    <span class="dropdown__trigger">Home & Cleaning Services</span>
+                                                                </a>
+                                                            </li>
+                                                            <li class="dropdown">
+                                                                <a href="categories/professional_services">
+                                                                    <span class="dropdown__trigger">Professional Services</span>
+                                                                </a>
+                                                            </li>
+                                                            <li class="dropdown">
+                                                                <a href="categories/construction_services">
+                                                                    <span class="dropdown__trigger">Construction & Auto Services</span>
+                                                                </a>
+                                                            </li>
+                                                            <li class="dropdown">
+                                                                <a href="categories/coffee_tea_joints">
+                                                                    <span class="dropdown__trigger">Coffee and Tea</span>
+                                                                </a>
+                                                            </li>
+                                                            <li class="dropdown">
+                                                                <a href="categories/grocery_store">
+                                                                    <span class="dropdown__trigger">Grocery Store</span>
+                                                                </a>
+                                                            </li>
+                                                            <li class="dropdown">
+                                                                <a href="categories/childcare">
+                                                                    <span class="dropdown__trigger">Childcare</span>
+                                                                </a>
+                                                            </li>
+                                                            <li class="dropdown">
+                                                                <a href="categories/health_and_wellness">
+                                                                    <span class="dropdown__trigger">Health & Wellness</span>
+                                                                </a>
+                                                            </li>
+
+                                                            <li class="dropdown">
+                                                                <a href="categories/other">
+                                                                    <span class="dropdown__trigger">Other</span>
+                                                                </a>
+                                                            </li>
+    
+                                                        </ul>
+                                                     </div>
+                                                    <!--end dropdown content-->
+                                                </div>
+                                                <!--end row-->
+                                            </div>
+                                        </div>
+                                        <!--end dropdown container-->
+                                    </li>
+                                </ul>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </div>
+</div>
+<div class="main-container">
+    <section class="imageblock feature-large">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-7 col-md-7">
+
+                    {% if 'Cloth' in business.category %}
+                    <a href="../business/{{ business.id }}">
+                        <img id="{{ business.id }}" onerror="imgErrorClothe(this);">
+                    </a>
+                        <script type="text/javascript">
+                            // Possible image sources
+                            var check_drive_link = "drive.google.com/file/";
+                            var str_pos = "{{ business.image }}".indexOf(check_drive_link)
+
+                            if (str_pos > -1) {
+                                var image_url = '{{ business.image }}'
+                                var image_url_split = image_url.split("/")
+
+                                console.log(image_url_split[5])
+
+                                var wrkng_link = 'https://drive.google.com/thumbnail?id=' + image_url_split[5]
+
+                                document.getElementById("{{ business.id }}").src = wrkng_link
+                            }
+                            else if ('{{ business.image }}' === '') {
+                                document.getElementById("{{ business.id }}").src = `{% static 'img/clothing/clothing_placeholder.jpg' %}`
+                            }
+                            else {
+                                document.getElementById("{{ business.id }}").src = "{{ business.image }}"
+                            }
+                        </script>
+
+
+
+                    {% elif 'Acces' in business.category %}
+                    <a href="../business/{{ business.id }}">
+                        <img id="{{ business.id }}" onerror="imgErrorAccessories(this);this.src=`{% static 'img/accessories/accessories.jpg' %}`">
+                    </a>
+
+                        <script type="text/javascript">
+                            // Possible image sources
+                            var check_drive_link = "drive.google.com/file/";
+                            var str_pos = "{{ business.image }}".indexOf(check_drive_link)
+
+                            if (str_pos > -1) {
+                                var image_url = '{{ business.image }}'
+                                var image_url_split = image_url.split("/")
+
+                                console.log(image_url_split[5])
+
+                                var wrkng_link = 'https://drive.google.com/thumbnail?id=' + image_url_split[5]
+
+                                document.getElementById("{{ business.id }}").src = wrkng_link
+                            }
+                            else if ('{{ business.image }}' === '') {
+                                document.getElementById("{{ business.id }}").src = `{% static 'img/accessories/accessories.jpg' %}`
+                            }
+                            else {
+                                document.getElementById("{{ business.id }}").src = "{{ business.image }}"
+                            }
+                        </script>
+
+
+                    {% elif 'Resta' in business.category %}
+                    <a href="../business/{{ business.id }}">
+                        <img id="{{ business.id }}" onerror="imgErrorRestaurant(this);this.src=`{% static 'img/restaurants/restaurant_placeholder.jpg' %}`">
+                    </a>
+
+                        <script type="text/javascript">
+                            // Possible image sources
+                            var check_drive_link = "drive.google.com/file/";
+                            var str_pos = "{{ business.image }}".indexOf(check_drive_link)
+
+                            if (str_pos > -1) {
+                                var image_url = '{{ business.image }}'
+                                var image_url_split = image_url.split("/")
+
+                                console.log(image_url_split[5])
+
+                                var wrkng_link = 'https://drive.google.com/thumbnail?id=' + image_url_split[5]
+
+                                document.getElementById("{{ business.id }}").src = wrkng_link
+                            }
+                            else if ('{{ business.image }}' === '') {
+                                document.getElementById("{{ business.id }}").src = `{% static 'img/restaurants/restaurant_placeholder.jpg' %}`
+                            }
+                            else {
+                                document.getElementById("{{ business.id }}").src = "{{ business.image }}"
+                            }
+                        </script>
+
+
+
+                    {% elif 'Club' in business.category %}
+                    <a href="../business/{{ business.id }}">
+                        <img id="{{ business.id }}" onerror="imgErrorClub(this);this.src=`{% static 'img/clubs/club_placeholder.jpg' %}`">
+                    </a>
+
+                        <script type="text/javascript">
+                            // Possible image sources
+                            var check_drive_link = "drive.google.com/file/";
+                            var str_pos = "{{ business.image }}".indexOf(check_drive_link)
+
+                            if (str_pos > -1) {
+                                var image_url = '{{ business.image }}'
+                                var image_url_split = image_url.split("/")
+
+                                console.log(image_url_split[5])
+
+                                var wrkng_link = 'https://drive.google.com/thumbnail?id=' + image_url_split[5]
+
+                                document.getElementById("{{ business.id }}").src = wrkng_link
+                            }
+                            else if ('{{ business.image }}' === '') {
+                                document.getElementById("{{ business.id }}").src = `{% static 'img/clubs/club_placeholder.jpg' %}`
+                            }
+                            else {
+                                document.getElementById("{{ business.id }}").src = "{{ business.image }}"
+                            }
+                        </script>
+
+
+
+                        {% elif 'Beauty Services' in business.category %}
+                        <a href="../business/{{ business.id }}">
+                            <img id="{{ business.id }}" onerror="imgErrorBeauty(this);this.src=`{% static 'img/beauty/beauty_placeholder.jpg' %}`">
+                        </a>
+                            <script type="text/javascript">
+                                // Possible image sources
+                                var check_drive_link = "drive.google.com/file/";
+                                var str_pos = "{{ business.image }}".indexOf(check_drive_link)
+
+                                if (str_pos > -1) {
+                                    var image_url = '{{ business.image }}'
+                                    var image_url_split = image_url.split("/")
+
+                                    console.log(image_url_split[5])
+
+                                    var wrkng_link = 'https://drive.google.com/thumbnail?id=' + image_url_split[5]
+
+                                    document.getElementById("{{ business.id }}").src = wrkng_link
+                                }
+                                else if ('{{ business.image }}' === '') {
+                                    document.getElementById("{{ business.id }}").src = `{% static 'img/beauty/beauty_placeholder.jpg' %}`
+                                }
+                                else {
+                                    document.getElementById("{{ business.id }}").src = "{{ business.image }}"
+                                }
+                            </script>
+
+
+                        {% elif 'Beauty Supplies' in business.category %}
+                        <a href="../business/{{ business.id }}">
+                            <img id="{{ business.id }}" onerror="imgErrorBeauty(this);this.src=`{% static 'img/beauty/beauty-supplies.jpg' %}`">
+                        </a>
+                            <script type="text/javascript">
+                                // Possible image sources
+                                var check_drive_link = "drive.google.com/file/";
+                                var str_pos = "{{ business.image }}".indexOf(check_drive_link)
+
+                                if (str_pos > -1) {
+                                    var image_url = '{{ business.image }}'
+                                    var image_url_split = image_url.split("/")
+
+                                    console.log(image_url_split[5])
+
+                                    var wrkng_link = 'https://drive.google.com/thumbnail?id=' + image_url_split[5]
+
+                                    document.getElementById("{{ business.id }}").src = wrkng_link
+                                }
+                                else if ('{{ business.image }}' === '') {
+                                    document.getElementById("{{ business.id }}").src = `{% static 'img/beauty/beauty-supplies.jpg' %}`
+                                }
+                                else {
+                                    document.getElementById("{{ business.id }}").src = "{{ business.image }}"
+                                }
+                            </script>
+
+
+                    {% elif 'Clean' in business.category %}
+                    <a href="../business/{{ business.id }}">
+                        <img id="{{ business.id }}" onerror="imgErrorCleaning(this);this.src=`{% static 'img/cleaning/cleaning_placeholder.jpg' %}`">
+                    </a>
+                        <script type="text/javascript">
+                            // Possible image sources
+                            var check_drive_link = "drive.google.com/file/";
+                            var str_pos = "{{ business.image }}".indexOf(check_drive_link)
+
+                            if (str_pos > -1) {
+                                var image_url = '{{ business.image }}'
+                                var image_url_split = image_url.split("/")
+
+                                console.log(image_url_split[5])
+
+                                var wrkng_link = 'https://drive.google.com/thumbnail?id=' + image_url_split[5]
+
+                                document.getElementById("{{ business.id }}").src = wrkng_link
+                            }
+                            else if ('{{ business.image }}' === '') {
+                                document.getElementById("{{ business.id }}").src = `{% static 'img/cleaning/cleaning_placeholder.jpg' %}`
+                            }
+                            else {
+                                document.getElementById("{{ business.id }}").src = "{{ business.image }}"
+                            }
+                        </script>
+
+
+
+                    {% elif 'Profes' in business.category %}
+                    <a href="../business/{{ business.id }}">
+                        <img id="{{ business.id }}" onerror="imgErrorProfsrvs(this);this.src=`{% static 'img/hero-image.jpg' %}`">
+                    </a>
+                        <script type="text/javascript">
+                            // Possible image sources
+                            var check_drive_link = "drive.google.com/file/";
+                            var str_pos = "{{ business.image }}".indexOf(check_drive_link)
+
+                            if (str_pos > -1) {
+                                var image_url = '{{ business.image }}'
+                                var image_url_split = image_url.split("/")
+
+                                console.log(image_url_split[5])
+
+                                var wrkng_link = 'https://drive.google.com/thumbnail?id=' + image_url_split[5]
+
+                                document.getElementById("{{ business.id }}").src = wrkng_link
+                            }
+                            else if ('{{ business.image }}' === '') {
+                                document.getElementById("{{ business.id }}").src = `{% static 'img/hero-image.jpg' %}`
+                            }
+                            else {
+                                document.getElementById("{{ business.id }}").src = "{{ business.image }}"
+                            }
+                        </script>
+
+
+
+                    {% elif 'Const' in business.category %}
+                    <a href="../business/{{ business.id }}">
+                        <img id="{{ business.id }}" onerror="imgErrorConstruction(this);this.src=`{% static 'img/construction/construction_placeholder.jpg' %}`">
+                    </a>
+
+                        <script type="text/javascript">
+                            // Possible image sources
+                            var check_drive_link = "drive.google.com/file/";
+                            var str_pos = "{{ business.image }}".indexOf(check_drive_link)
+
+                            if (str_pos > -1) {
+                                var image_url = '{{ business.image }}'
+                                var image_url_split = image_url.split("/")
+
+                                console.log(image_url_split[5])
+
+                                var wrkng_link = 'https://drive.google.com/thumbnail?id=' + image_url_split[5]
+
+                                document.getElementById("{{ business.id }}").src = wrkng_link
+                            }
+                            else if ('{{ business.image }}' === '') {
+                                document.getElementById("{{ business.id }}").src = `{% static 'img/construction/construction_placeholder.jpg' %}`
+                            }
+                            else {
+                                document.getElementById("{{ business.id }}").src = "{{ business.image }}"
+                            }
+                        </script>
+
+
+
+                    {% elif 'Coffe' in business.category %}
+                    <a href="../business/{{ business.id }}">
+                        <img id="{{ business.id }}" onerror="imgErrorCoffee(this);this.src=`{% static 'img/coffee/coffee_placeholder.jpg' %}`">
+                    </a>
+                        <script type="text/javascript">
+                            // Possible image sources
+                            var check_drive_link = "drive.google.com/file/";
+                            var str_pos = "{{ business.image }}".indexOf(check_drive_link)
+
+                            if (str_pos > -1) {
+                                var image_url = '{{ business.image }}'
+                                var image_url_split = image_url.split("/")
+
+                                console.log(image_url_split[5])
+
+                                var wrkng_link = 'https://drive.google.com/thumbnail?id=' + image_url_split[5]
+
+                                document.getElementById("{{ business.id }}").src = wrkng_link
+                            }
+                            else if ('{{ business.image }}' === '') {
+                                document.getElementById("{{ business.id }}").src = `{% static 'img/coffee/coffee_placeholder.jpg' %}`
+                            }
+                            else {
+                                document.getElementById("{{ business.id }}").src = "{{ business.image }}"
+                            }
+                        </script>
+
+
+
+                    {% elif 'Health' in business.category %}
+                    <a href="../business/{{ business.id }}">
+                        <img id="{{ business.id }}" onerror="imgErrorHealth(this);this.src=`{% static 'img/health_wellness/health_placeholder.jpg' %}`">
+                    </a>
+                        <script type="text/javascript">
+                            // Possible image sources
+                            var check_drive_link = "drive.google.com/file/";
+                            var str_pos = "{{ business.image }}".indexOf(check_drive_link)
+
+                            if (str_pos > -1) {
+                                var image_url = '{{ business.image }}'
+                                var image_url_split = image_url.split("/")
+
+                                console.log(image_url_split[5])
+
+                                var wrkng_link = 'https://drive.google.com/thumbnail?id=' + image_url_split[5]
+
+                                document.getElementById("{{ business.id }}").src = wrkng_link
+                            }
+                            else if ('{{ business.image }}' === '') {
+                                document.getElementById("{{ business.id }}").src = `{% static 'img/health_wellness/health_placeholder.jpg' %}`
+                            }
+                            else {
+                                document.getElementById("{{ business.id }}").src = "{{ business.image }}"
+                            }
+                        </script>
+
+
+                    {% elif 'Child' in business.category %}
+                    <a href="../business/{{ business.id }}">
+                        <img id="{{ business.id }}" onerror="imgErrorChildcare(this);this.src=`{% static 'img/childcare/childcare_placeholder.jpg' %}`">
+                    </a>
+                        <script type="text/javascript">
+                            // Possible image sources
+                            var check_drive_link = "drive.google.com/file/";
+                            var str_pos = "{{ business.image }}".indexOf(check_drive_link)
+
+                            if (str_pos > -1) {
+                                var image_url = '{{ business.image }}'
+                                var image_url_split = image_url.split("/")
+
+                                console.log(image_url_split[5])
+
+                                var wrkng_link = 'https://drive.google.com/thumbnail?id=' + image_url_split[5]
+
+                                document.getElementById("{{ business.id }}").src = wrkng_link
+                            }
+                            else if ('{{ business.image }}' === '') {
+                                document.getElementById("{{ business.id }}").src = `{% static 'img/childcare/childcare_placeholder.jpg' %}`
+                            }
+                            else {
+                                document.getElementById("{{ business.id }}").src = "{{ business.image }}"
+                            }
+                        </script>
+
+                        {% elif 'Other' in business.category %}
+                        <a href="../business/{{ business.id }}">
+                            <img id="{{ business.id }}" onerror="imgErrorChildcare(this);this.src=`https://via.placeholder.com/300x150`">
+                        </a>
+                            <script type="text/javascript">
+                                // Possible image sources
+                                var check_drive_link = "drive.google.com/file/";
+                                var str_pos = "{{ business.image }}".indexOf(check_drive_link)
+
+                                if (str_pos > -1) {
+                                    var image_url = '{{ business.image }}'
+                                    var image_url_split = image_url.split("/")
+
+                                    console.log(image_url_split[5])
+
+                                    var wrkng_link = 'https://drive.google.com/thumbnail?id=' + image_url_split[5]
+
+                                    document.getElementById("{{ business.id }}").src = wrkng_link
+                                }
+                                else if ('{{ business.image }}' === '') {
+                                    document.getElementById("{{ business.id }}").src = `https://via.placeholder.com/300x150`
+                                }
+                                else {
+                                    document.getElementById("{{ business.id }}").src = "{{ business.image }}"
+                                }
+                            </script>
+
+                        
+                    {% endif %}
+
+                    <h1>{{ business.title }}</h1>
+                    <hr class="short">
+
+                    <div class="row">
+
+                        <div style="margin-bottom: 30px;" class="col-md-12">
+                            <br><br>
+                            <h3><strong>Business Description</strong></h3>
+                            <p>{{ business.description }}</p>
+                        </div>
+                        
+
+                        <div class="col-md-7">
+                            <p><span style="font-weight: 700;">Website:</span> {% if business.website == '' %} No information available {% else %}<a href="{{ business.website }}">{{ business.website }}</a> {% endif %}</p>
+                            <p><span style="font-weight: 700;">Email:</span> {% if business.email == '' or business.email == 'no info' %} No information available {% else %}<a href="mailto:{{ business.email }}">{{ business.email }}{% endif %}</a></p>
+                            <p><span style="font-weight: 700;">Phone number:</span> {% if business.phone == '' or business.phone == 'no info' %} No information available {% else %}<a href="tel:{{ business.phone }}">{{ business.phone }}{% endif %}</a></p>
+                            <p><span style="font-weight: 700;">Address:</span> {% if business.address == '' %} No information available {% else %}{{ business.address }} {% endif %}
+                        </div>
+                        <br class="visible-xs">
+                        <div class="col-md-5">
+                            <p><span style="font-weight: 700;">Category:</span> {% if business.category == '' %} No information {% else %}{{ business.category }} {% endif %}</p>
+                            <!-- <p><span style="font-weight: 700;">County:</span> {% if business.county == '' %} No information {% else %}{{ business.county }} {% endif %}</p> -->
+                            <p><span style="font-weight: 700;">Operation hours:</span> {% if business.operation_hours == '' %} No information available {% else %}{{ business.operation_hours }} {% endif %}</p>
+                        </div>
+                        <div class="col-12">
+                            <br>
+                            <!-- <p><span style="font-weight: 700;">Reviews:</span> <a href="#comments">{{ business.approved_comments.count }}</a></p> -->
+                            
+                            <div class="star-ratings-css">
+                              <div class="star-ratings-css-top" id="stars_percentage"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+                              <div class="star-ratings-css-bottom"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+                            </div>
+                            
+                            <p><span style="font-weight: 700;"></span>  <a href="#0"><span id="total_rating_avg"></span> (<span id="rating_total_count"></span> ratings)</a> </p>
+                            
+                        </div>
+                    </div>
+
+                    <section id="comments">
+                        <div class="row justify-content-center">
+                            <div class="col-md-12 col-lg-12">
+                                <div class="comments">
+                                    <h3 style="font-weight: 700;">Reviews from <span><img style="margin-top: -15px;" src="{% static 'img/yelp.png' %}"></span></h3>
+                                    <ul id="no_business_match" class="comments__list">
+                                        <li>
+                                            <div class="comment">
+                                                <div class="comment__avatar">
+                                                    <img alt="Image" id="comment_1_user_image" src="" />
+                                                </div>
+                                                <div class="comment__body">
+                                                    <strong><h4 id="comment_1_user"></h4> </strong> <span style="font-size: 12px;" id="comment_1_date"></span>
+                                                    <div class="comment__meta">
+
+                                                        <div class="star-ratings-css">
+                                                          <div class="star-ratings-css-top" id="comment_1_rating"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+                                                          <div class="star-ratings-css-bottom"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+                                                        </div>
+                                                        
+        
+                                                        <!-- <div class="rating" id="index-rating"></div> -->
+                                                        <!-- <a href="#">Reply</a> -->
+                                                    </div>
+                                                    <br><br>
+                                                    <p id="comment_1_text">
+                                                    
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </li>
+    
+                                        <li>
+                                            <div class="comment">
+                                                <div class="comment__avatar">
+                                                    <img alt="Image" id="comment_2_user_image" src="" />
+                                                </div>
+                                                <div class="comment__body">
+                                                    <strong><h4 id="comment_2_user"></h4> </strong> <span style="font-size: 12px;" id="comment_2_date"></span>
+                                                    <div class="comment__meta">
+                                                        
+                                                        <div class="star-ratings-css">
+                                                          <div class="star-ratings-css-top" id="comment_2_rating"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+                                                          <div class="star-ratings-css-bottom"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+                                                        </div>
+
+                                                        <!-- <span style="margin-left: 10px;" id="comment_2_rating" class="cstm-rating"></span> -->
+
+<!-- 
+                                                        <a id="comment_2_rating" href="#0"></a> <span>Stars</span> -->
+    
+                                                        <!-- <div class="rating" id="index-rating_1"></div> -->
+                                                        <!-- <a href="#">Reply</a> -->
+                                                    </div>
+                                                    <br><br>
+                                                    <p id="comment_2_text">
+                                                    
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="comment">
+                                                <div class="comment__avatar">
+                                                    <img alt="Image" id="comment_3_user_image" src="" />
+                                                </div>
+                                                <div class="comment__body">
+                                                    <strong><h4 id="comment_3_user"></h4> </strong> <span style="font-size: 12px;" id="comment_3_date"></span>
+                                                    <div class="comment__meta">
+                                                        
+
+                                                        <div class="star-ratings-css">
+                                                          <div class="star-ratings-css-top" id="comment_3_rating"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+                                                          <div class="star-ratings-css-bottom"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+                                                        </div>
+
+                                                        <!-- <a id="comment_3_rating" href="#0"></a> <span>Stars</span> -->
+    
+                                                        <!-- <div class="rating" id="index-rating_2"></div> -->
+                                                        <!-- <a href="#">Reply</a> -->
+                                                    </div>
+                                                    <br><br>
+                                                    <p id="comment_3_text">
+                                                    
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <!-- end of comments -->
+                                    </ul>
+                                </div>
+                                <!--end comments-->
+    
+                                <div style="margin: 10% 0% 15% 0%;" class="comments2">
+                                    <h3 style="font-weight: 800;">Reviews from Bossing Up</h3>
+                                    <ul id="no_business_match" class="comments__list">
+                                        <li>
+                                            {% for comment in business.comments.all %}
+                                            {% if comment.approved_comment %}
+                                            <div class="comment">
+                                                <div class="comment__avatar">
+                                                    <img alt="Image" id="comment_1_user_image" src="https://www.gravatar.com/avatar/?d=identicon" />
+                                                </div>
+                                                <div class="comment__body">
+                                                    <h4><strong>{{ comment.author }}</strong></h4>
+                                                    <div class="comment__meta">
+                                                        <span>{{ comment.created_date|naturaltime }}</span>
+                                                    </div>
+
+                                                    {% if comment.rating > 0  %}
+                                                    {% with answer=20 %}
+                                                        
+                                                    <div class="star-ratings-css">
+                                                        <div class="star-ratings-css-top" style="width: {{ answer|mul:comment.rating }}%"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+                                                        <div class="star-ratings-css-bottom"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+                                                    </div>
+
+                                                    {% endwith %}
+                                                    {% else %}
+                                                        No rating
+                                                    {% endif %}
+
+                                                    
+                                                    <br>
+                                                    <p>
+                                                    {{ comment.text|linebreaks }}
+                                                    </p>
+
+                                                </div>
+                                            </div>
+                                            {% endif %}
+                                            {% empty %}
+                                            
+                                            <p>No reviews here yet :( <br> Be the first to review on the form below.</p>
+                                            
+                                            {% endfor %}
+                                        </li>
+                                    </ul>
+                                </div>
+                                <!--end comments-->
+    
+                                <div class="comments-form">
+                                    <h3 style="font-weight: 700;">Leave a review</h3>
+                                        <form method="POST" class="post-form">
+                                            {% csrf_token %}
+    
+                                            <!-- Rating Stars Box -->
+                                              <div class='rating-stars text-left'>
+                                                <label style="padding-bottom: 10px;">Rating:</label>
+                                                <ul id='stars'>
+                                                  <li class='star' title='Poor' data-value='1'>
+                                                    <i class='fa fa-star fa-fw'></i>
+                                                  </li>
+                                                  <li class='star' title='Fair' data-value='2'>
+                                                    <i class='fa fa-star fa-fw'></i>
+                                                  </li>
+                                                  <li class='star' title='Good' data-value='3'>
+                                                    <i class='fa fa-star fa-fw'></i>
+                                                  </li>
+                                                  <li class='star' title='Excellent' data-value='4'>
+                                                    <i class='fa fa-star fa-fw'></i>
+                                                  </li>
+                                                  <li class='star' title='WOW!!!' data-value='5'>
+                                                    <i class='fa fa-star fa-fw'></i>
+                                                  </li>
+                                                </ul>
+                                              </div>
+    
+                                              <div style="display: none;" class='success-box'>
+                                                <div class='clearfix'></div>
+                                                <img style="margin-bottom: unset;" alt='tick image' width='32' src='data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTkuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iTGF5ZXJfMSIgeD0iMHB4IiB5PSIwcHgiIHZpZXdCb3g9IjAgMCA0MjYuNjY3IDQyNi42NjciIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDQyNi42NjcgNDI2LjY2NzsiIHhtbDpzcGFjZT0icHJlc2VydmUiIHdpZHRoPSI1MTJweCIgaGVpZ2h0PSI1MTJweCI+CjxwYXRoIHN0eWxlPSJmaWxsOiM2QUMyNTk7IiBkPSJNMjEzLjMzMywwQzk1LjUxOCwwLDAsOTUuNTE0LDAsMjEzLjMzM3M5NS41MTgsMjEzLjMzMywyMTMuMzMzLDIxMy4zMzMgIGMxMTcuODI4LDAsMjEzLjMzMy05NS41MTQsMjEzLjMzMy0yMTMuMzMzUzMzMS4xNTcsMCwyMTMuMzMzLDB6IE0xNzQuMTk5LDMyMi45MThsLTkzLjkzNS05My45MzFsMzEuMzA5LTMxLjMwOWw2Mi42MjYsNjIuNjIyICBsMTQwLjg5NC0xNDAuODk4bDMxLjMwOSwzMS4zMDlMMTc0LjE5OSwzMjIuOTE4eiIvPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8L3N2Zz4K'/>
+                                                <div class='text-message'></div>
+                                              </div>
+                                              <br>
+                                            {{ form.as_p }}
+                                            <button style="color: black; background-color: #ffee85; font-size: 15px;" type="submit" class="save btn btn-default">Submit Review</button>
+                                        </form>
+                                </div>
+                            </div>
+                        </div>
+                        <!--end of row-->
+                    </section>
+
+                </div>
+
+                <div class="imageblock__content cstm-map-con2 col-lg-5 col-md-5 col-xs-12 pos-right order-first order-md-last">
+                
+                    <center>
+                        <button id="geolocate-custom" style="background-color: #ffee85; color: black; border: #ffee85; font-size: 18px; padding-left: 15px; padding-right: 15px;" class="btn btn--primary tooltip"><i style="color: black;" class="fas fa-map-marker-alt"></i> Turn on Location <span class="tooltiptext">Turn on location services to see businesses around you</span> </button>
+                    </center>
+                    <div style="margin-top: 10px;" id='map'></div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <footer style="background-color: #d3d3d3; padding-top: 35px; padding-bottom: 15px!important;" class="text-center-xs space--xs">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12 text-center text-center-xs">
+    
+                    <a href="/">
+                        <img style="width: 15%;" src="{% static 'img/logo2.png' %}">
+                    </a>
+    
+                    <h2 class="mgn-cstm-footer">Find Dope Businesses In Your Community</h2>
+    
+                    <div class="row">
+                        <div class="col-xs-6 text-right">
+                            <a href="https://docs.google.com/forms/d/e/1FAIpQLSfdqcO5yc06j48fZdQEo5iFSDjnIk2VL5hYY-a73bPKlTSF4A/viewform?vc=0&c=0&w=1&flr=0" target="_blank" class="footer-cstm-btn">Feedback</a>
+                            <p class="mgn-cstm-footer"><a href="https://www.bossingup.net">Bossingup.net</a></p>
+                        </div>
+                        <div class="col-xs-6 text-left">
+                            <a href="https://docs.google.com/forms/d/e/1FAIpQLScpPW5K7gadxnMlMTxAQ1D0tOaLx-p7erCqGXRzyAs3_xwRMg/viewform?vc=0&c=0&w=1&flr=0&usp=mail_form_link" target="_blank" class="footer-cstm-btn">Add business</a>
+                            <p class="mgn-cstm-footer"><a href="mailto:bossingupbiz@gmail.com">bossingupbiz@gmail.com</a></p>
+                        </div>
+                    </div>
+                    <br>
+                    <ul class="social-list list-inline list--hover">
+                        <li><a href="https://twitter.com/bossingupbiz?lang=en" target="_blank"><i class="socicon socicon-twitter icon icon--sm"></i></a></li>
+                        <li><a href="https://www.facebook.com/BossingUpbiz/" target="_blank"><i class="socicon socicon-facebook icon icon--sm"></i></a></li>
+                        <li><a href="https://www.instagram.com/bossingupbiz/" target="_blank"><i class="socicon socicon-instagram icon icon--sm"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div style="margin-top: 1em;" class="row">
+                <div class="col-xs-5 col-sm-5 text-right text-left-xs">
+                    <span class="type--fine-print">© Bossing Up, Inc. <span class="update-year"></span></span>
+                </div>
+                <div class="col-xs-4 col-sm-3 text-center">
+                    <span class="type--fine-print"> Privacy Policy </span>
+                </div>
+                <div class="col-xs-2 col-sm-3 text-left">
+                    <span class="type--fine-print"> Legal </span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+    <script type="text/javascript">
+
+        $(document).ready(function(){
+      
+      /* 1. Visualizing things on Hover - See next part for action on click */
+      $('#stars li').on('mouseover', function(){
+        var onStar = parseInt($(this).data('value'), 10); // The star currently mouse on
+       
+        // Now highlight all the stars that's not after the current hovered star
+        $(this).parent().children('li.star').each(function(e){
+          if (e < onStar) {
+            $(this).addClass('hover');
+          }
+          else {
+            $(this).removeClass('hover');
+          }
+        });
+        
+      }).on('mouseout', function(){
+        $(this).parent().children('li.star').each(function(e){
+          $(this).removeClass('hover');
+        });
+      });
+      
+      
+      /* 2. Action to perform on click */
+      $('#stars li').on('click', function(){
+        var onStar = parseInt($(this).data('value'), 10); // The star currently selected
+        var stars = $(this).parent().children('li.star');
+        
+        for (i = 0; i < stars.length; i++) {
+          $(stars[i]).removeClass('selected');
+        }
+        
+        for (i = 0; i < onStar; i++) {
+          $(stars[i]).addClass('selected');
+        }
+        
+        // JUST RESPONSE (Not needed)
+        var ratingValue = parseInt($('#stars li.selected').last().data('value'), 10);
+        var msg = "";
+    
+        document.getElementById('id_rating').value = ratingValue;
+    
+        if (ratingValue > 1) {
+            msg = "Thanks! You rated this " + ratingValue + " stars.";
+        }
+        else {
+            msg = "We will ask the business to improve!!!. You rated this " + ratingValue + " stars.";
+        }
+        responseMessage(msg);
+        
+      });
+      
+      
+    });
+    
+    
+    function responseMessage(msg) {
+      $('.success-box').fadeIn(200);  
+      $('.success-box div.text-message').html("<span>" + msg + "</span>");
+    }
+    
+    </script>
+
+
+    <script type="text/javascript">
+        function imgErrorClothe(image) {
+            image.onerror = "";
+            var imgArray = ["{% static 'img/clothing/clothe2.jpg' %}", "{% static 'img/clothing/clothing_placeholder.jpg' %}"];
+            var randomNumber = Math.floor(Math.random()*imgArray.length);
+            image.src = imgArray[randomNumber];
+            return true;
+        }
+    
+        function imgErrorAccessories(image) {
+            image.onerror = "";
+            var imgArray = ["{% static 'img/accessories/accessories.jpg' %}", "{% static 'img/accessories/accessories_2.jpg' %}"];
+            var randomNumber = Math.floor(Math.random()*imgArray.length);
+            image.src = imgArray[randomNumber];
+            return true;
+        }
+    
+        function imgErrorRestaurant(image) {
+            image.onerror = "";
+            var imgArray = ["{% static 'img/restaurants/restaurant_2.jpg' %}", "{% static 'img/restaurants/restaurant_placeholder.jpg' %}"];
+            var randomNumber = Math.floor(Math.random()*imgArray.length);
+            image.src = imgArray[randomNumber];
+            return true;
+        }
+    
+        function imgErrorClub(image) {
+            image.onerror = "";
+            var imgArray = ["{% static 'img/clubs/club_1.jpg' %}", "{% static 'img/clubs/club_2.jpg' %}", "{% static 'img/clubs/club_3.jpg' %}", "{% static 'img/clubs/club_4.jpg' %}"];
+            var randomNumber = Math.floor(Math.random()*imgArray.length);
+            image.src = imgArray[randomNumber];
+            return true;
+        }
+    
+        function imgErrorBeauty(image) {
+            image.onerror = "";
+            var imgArray = ["{% static 'img/beauty/beauty_placeholder.jpg' %}"];
+            var randomNumber = Math.floor(Math.random()*imgArray.length);
+            image.src = imgArray[randomNumber];
+            return true;
+        }
+    
+        function imgErrorCleaning(image) {
+            image.onerror = "";
+            var imgArray = ["{% static 'img/cleaning/cleaning_placeholder.jpg' %}"];
+            var randomNumber = Math.floor(Math.random()*imgArray.length);
+            image.src = imgArray[randomNumber];
+            return true;
+        }
+    
+        function imgErrorProfsrvs(image) {
+            image.onerror = "";
+            var imgArray = ["{% static 'img/professional_services/professional_1.jpg' %}"];
+            var randomNumber = Math.floor(Math.random()*imgArray.length);
+            image.src = imgArray[randomNumber];
+            return true;
+        }
+    
+        function imgErrorConstruction(image) {
+            image.onerror = "";
+            var imgArray = ["{% static 'img/construction/construction_1.jpg' %}"];
+            var randomNumber = Math.floor(Math.random()*imgArray.length);
+            image.src = imgArray[randomNumber];
+            return true;
+        }
+    
+        function imgErrorCoffee(image) {
+            image.onerror = "";
+            var imgArray = ["{% static 'img/coffee/coffee_1.jpg' %}"];
+            var randomNumber = Math.floor(Math.random()*imgArray.length);
+            image.src = imgArray[randomNumber];
+            return true;
+        }
+    
+        function imgErrorHealth(image) {
+            image.onerror = "";
+            var imgArray = ["{% static 'img/health_wellness/health_1.jpg' %}"];
+            var randomNumber = Math.floor(Math.random()*imgArray.length);
+            image.src = imgArray[randomNumber];
+            return true;
+        }
+    
+        
+    
+    </script>
+    
+
+{% endblock content_detail %}

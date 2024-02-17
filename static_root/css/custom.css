@@ -1,0 +1,57 @@
+.cstm-width-60 {
+	width: 60%;
+	justify-content: center;
+}
+
+.main_form input {
+	font-size: 20px;
+}
+
+.cstm_img {
+	background-image: url(../img/hero-image.jpg);
+	background-size: cover;
+	opacity: 0.9;
+}
+
+.input-select:after {
+	padding: 10px 13px;
+}
+
+.client_paginator {
+	position: relative;
+	width: 100%;
+	overflow-y: hidden!important;
+	overflow-x: scroll!important;
+	margin-top: 5%;
+  }
+
+#map {
+	height: 100%;
+  }
+
+.pagination {
+display: table !important;
+}
+
+.pagination>li {
+display: table-cell !important;
+}
+
+.clr-white {
+	color: white!important;
+}
+
+.boxed:not([class*='bg-']) {
+	background-color: #ececec;
+}
+
+.reduce_p_mgn p {
+	margin-bottom: 0.857143em;
+}
+
+@media (min-width: 1200px) { 
+	.container {
+	max-width: 1350px!important;
+	width: 1350px!important;
+	}
+}

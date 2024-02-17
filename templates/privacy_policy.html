@@ -1,0 +1,851 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+    <head>
+        
+        <!-- GOOGLE TRACKING SETUP -->
+
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-K0KGN7KVT8"></script>
+        <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-K0KGN7KVT8');
+        </script>
+
+        <meta charset="utf-8">
+        <title>Find black owned businesses around you</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Site Description Here">
+        <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" type="text/css" media="all" />
+        <link href="{% static 'css/stack-interface.css' %}" rel="stylesheet" type="text/css" media="all" />
+        <link href="{% static 'css/socicon.css' %}" rel="stylesheet" type="text/css" media="all" />
+        <link href="{% static 'css/lightbox.min.css' %}" rel="stylesheet" type="text/css" media="all" />
+        <link href="{% static 'css/flickity.css' %}" rel="stylesheet" type="text/css" media="all" />
+        <link href="{% static 'css/iconsmind.css' %}" rel="stylesheet" type="text/css" media="all" />
+        <link href="{% static 'css/jquery.steps.css' %}" rel="stylesheet" type="text/css" media="all" />
+        <link href="{% static 'css/theme.css' %}" rel="stylesheet" type="text/css" media="all" />
+        <link href="{% static 'css/custom.css' %}" rel="stylesheet" type="text/css" media="all" />
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+        
+        <!-- <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script> -->
+        <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAqkwYqdr51nm3-ILj_Wtd3r8QhsVt7d5E&callback=initMap&libraries=&v=weekly"
+        defer
+        ></script>
+        <script src="https://unpkg.com/@mapbox/mapbox-sdk/umd/mapbox-sdk.min.js"></script>
+
+        <style type="text/css">
+            .boxed:not([class*='bg-']) {
+                background-color: white!important;
+                height: 155px;
+                border-radius: 0px 0px 6px 6px!important;
+            }
+        </style>
+
+        <!-- Facebook Pixel Code -->
+        <script>
+            !function(f,b,e,v,n,t,s)
+            {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+            n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+            if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+            n.queue=[];t=b.createElement(e);t.async=!0;
+            t.src=v;s=b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t,s)}(window, document,'script',
+            'https://connect.facebook.net/en_US/fbevents.js');
+            fbq('init', '160891119314064');
+            fbq('track', 'PageView');
+            </script>
+            <noscript><img height="1" width="1" style="display:none"
+            src="https://www.facebook.com/tr?id=160891119314064&ev=PageView&noscript=1"
+            /></noscript>
+            <!-- End Facebook Pixel Code -->
+            
+    </head>
+    <body class=" " data-smooth-scroll-offset='180'>
+        <div id="start"></div>
+        <!-- <div id="preloader">
+            <div class="medica-load"></div>
+            <img src="{% static 'img/logo2.png' %}" alt="logo">
+        </div>
+ -->
+        <div id="preloader">
+            <div class="medica-load"></div>
+            <img src="{% static 'img/logo2.png' %}" alt="logo">
+        </div>
+
+        <div class="nav-container ">
+            <div class="bar bar--sm visible-xs visible-sm">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-3 col-md-2">
+                            <a href="/">
+                                <img class="logo logo-dark" alt="logo" src="{% static 'img/logo2.png' %}" />
+                                <img class="logo logo-light" alt="logo" src="{% static 'img/logo2.png' %}" />
+                            </a>
+                        </div>
+                        <div class="col-9 col-md-10 text-right">
+                            <a href="#" class="hamburger-toggle" data-toggle-class="#menu2;hidden-xs">
+                                <i class="icon icon--sm stack-interface stack-menu"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <!--end of row-->
+                </div>
+                <!--end of container-->
+            </div>
+            <!--end bar-->
+            <nav id="menu2" class="bar bar-2 hidden-xs hidden-sm bar--transparent bar--absolute" data-scroll-class='90vh:pos-fixed'>
+                <div class="container_2">
+                    <div class="row">
+                        <div class="col-md-2 col-lg-3 text-center text-left-sm hidden-xs">
+                            <div class="bar__module">
+                                <a href="/">
+                                    <img class="logo logo-dark" alt="logo" src="{% static 'img/logo2.png' %}" />
+                                    <img class="logo logo-light" alt="logo" src="{% static 'img/logo2.png' %}" />
+                                </a>
+                            </div>
+                            <!--end module-->
+                        </div>
+                        <div class="col-md-8 col-lg-7 text-right">
+                            <div class="bar__module">
+                                <ul class="menu-horizontal text-left">
+                                    <li class="dropdown">
+                                        <span class="dropdown__trigger">Categories</span>
+                                        <div class="dropdown__container">
+                                            <div class="container">
+                                                <div class="row">
+                                                    <div class="dropdown__content col-lg-4 col-md-4">
+                                                        <ul class="menu-vertical">
+                                                            <li class="dropdown">
+                                                                <a href="categories/clothing">
+                                                                    <span class="dropdown__trigger">Clothing</span>
+                                                                </a>
+                                                            </li>
+                                                            <li class="dropdown">
+                                                                <a href="categories/accessories">
+                                                                    <span class="dropdown__trigger">Accessories</span>
+                                                                </a>
+                                                            </li>
+                                                            <li class="dropdown">
+                                                                <a href="categories/restaurants">
+                                                                    <span class="dropdown__trigger">Restaurants</span>
+                                                                </a>
+                                                            </li>
+                                                            <li class="dropdown">
+                                                                <a href="categories/clubs_bars_lounges">
+                                                                    <span class="dropdown__trigger">Clubs/Bars/Lounges</span>
+                                                                </a>
+                                                            </li>
+                                                            <li class="dropdown">
+                                                                <a href="categories/beauty_services">
+                                                                    <span class="dropdown__trigger">Beauty Services, Salons & Barbers</span>
+                                                                </a>
+                                                            </li>
+                                                            <li class="dropdown">
+                                                                <a href="categories/beauty_supplies">
+                                                                    <span class="dropdown__trigger">Beauty Supplies</span>
+                                                                </a>
+                                                            </li>
+                                                            <li class="dropdown">
+                                                                <a href="categories/home_cleaning">
+                                                                    <span class="dropdown__trigger">Home & Cleaning Services</span>
+                                                                </a>
+                                                            </li>
+                                                            <li class="dropdown">
+                                                                <a href="categories/professional_services">
+                                                                    <span class="dropdown__trigger">Professional Services</span>
+                                                                </a>
+                                                            </li>
+                                                            <li class="dropdown">
+                                                                <a href="categories/construction_services">
+                                                                    <span class="dropdown__trigger">Construction & Auto Services</span>
+                                                                </a>
+                                                            </li>
+                                                            <li class="dropdown">
+                                                                <a href="categories/coffee_tea_joints">
+                                                                    <span class="dropdown__trigger">Coffee and Tea</span>
+                                                                </a>
+                                                            </li>
+                                                            <li class="dropdown">
+                                                                <a href="categories/grocery_store">
+                                                                    <span class="dropdown__trigger">Grocery Store</span>
+                                                                </a>
+                                                            </li>
+                                                            <li class="dropdown">
+                                                                <a href="categories/childcare">
+                                                                    <span class="dropdown__trigger">Childcare</span>
+                                                                </a>
+                                                            </li>
+                                                            <li class="dropdown">
+                                                                <a href="categories/health_and_wellness">
+                                                                    <span class="dropdown__trigger">Health & Wellness</span>
+                                                                </a>
+                                                            </li>
+
+                                                            <li class="dropdown">
+                                                                <a href="categories/other">
+                                                                    <span class="dropdown__trigger">Other</span>
+                                                                </a>
+                                                            </li>
+
+                                                        </ul>
+                                                    </div>
+                                                    <!--end dropdown content-->
+                                                </div>
+                                                <!--end row-->
+                                            </div>
+                                        </div>
+                                        <!--end dropdown container-->
+                                    </li>
+                                    <li>
+                                        <a target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLSfcqaBwFLEulg2sSspDGScfh4z2ZhMKvjA2OtrjDl1eKEQI9A/viewform">
+                                            <span>Join</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLScNrBzv6UEHi1c7Hj0gNIVF7obiEQnO-kAp9KktkEpabI0SnQ/viewform?vc=0&c=0&w=1&flr=0&gxids=7628">
+                                            <span>Volunteer</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="mailto:bossingupbiz@gmail.com">
+                                            <span>Contact us</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#0">
+                                            <span>Donate</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/site#main">
+                                            <span>About</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/blog">
+                                            <span>Blog</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <!--end module-->
+                        </div>
+                        <div class="col-md-1 col-lg-1 text-right text-left-xs text-left-sm order-lg-3">
+                            <div class="bar__module">
+                                <a style="background-color: #ffee85; border-color: #ffee85; border-radius: 30px; margin-top: 8px;" class="btn btn--sm btn--primary type--uppercase" href="https://docs.google.com/forms/d/e/1FAIpQLScpPW5K7gadxnMlMTxAQ1D0tOaLx-p7erCqGXRzyAs3_xwRMg/viewform?vc=0&c=0&w=1&flr=0&usp=mail_form_link" target="_blank">
+                                    <span class="btn__text cstm">
+                                        Add Business
+                                    </span>
+                                </a>
+                            </div>
+                            <!--end module-->
+                        </div>
+                    </div>
+                    <!--end of row-->
+                </div>
+                <!--end of container-->
+            </nav>
+            <!--end bar-->
+        </div>
+        <div class="main-container">
+            <section class="cover height-30 imagebg text-center" data-overlay="4" id="home">
+                <div class="background-image-holder">
+                    <img alt="background" src="{% static 'img/privacy_policy.jpg' %}" />
+                </div>
+                <div class="container pos-vertical-center">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <h3 class="title-main" style="font-size: 48px; letter-spacing: -1px; margin-top: 220px; font-weight: 800; line-height: 50px;">
+                                PRIVACY POLICY
+                            </h3>
+                        </div>
+                    </div>
+                    <!--end of row-->
+                </div>
+                <!--end of container-->
+            </section>
+            
+            <section style="background-color: #ececec;" class=" ">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12 text-left">
+                            <h1 style="font-weight: 500;">I. Bossing Up Privacy Policy</h1>
+                            <br>
+                            <p>This Privacy Policy is effective <strong>March 1, 2021</strong> for all users.</p>
+                            <p>This Privacy Policy describes our policies on the collection, use, and disclosure of information about you in
+                                connection with your use of our services, including those offered through our websites, communications
+                                (e.g., emails, phone calls, and texts), and website applications (collectively, the <strong>“Service”</strong>). The terms
+                                <strong>“we”, “us”, and “Bossing Up”</strong> refer to: (i) Bossing Up, Inc., a Delaware corporation with its headquarters
+                                in Brooklyn, NY.</p>
+                            <p>When you use the Service, you consent to our collection, use, and disclosure of information about you as
+                                described in this Privacy Policy. This Privacy Policy governs your relationship with Bossing Up.</p>
+
+                            <br>
+                            <ol>
+                                <li style="font-size: 2.35714286em; font-weight: 500; color: black;">
+                                    <p>INFORMATION WE COLLECT AND HOW WE USE IT</p>
+                                </li>
+                                <p>We may collect, transmit, and store information about you in connection with your use of the Service,
+                                    including any information you send to or through the Service. We use that information to provide the
+                                    Service’s functionality, fulfill your requests, improve the Service’s quality, engage in research and
+                                    analysis relating to the Service, personalize your experience, track usage of the Service, provide
+                                    feedback to third party businesses that are listed on the Service, display relevant advertising, market
+                                    the Service, provide customer support, message you, back up our systems, allow for disaster recovery,
+                                    enhance the security of the Service, and comply with legal obligations. Even when we do not retain
+                                    such information, it still must be transmitted to our servers initially and stored long enough to process
+                                </p>
+
+                                <p>Please also note:</p>
+                                <ol>
+                                    <li>
+                                        <p><strong>Account Information:</strong> When you create a Bossing Up account, we store and use the information
+                                        you provide during that process, such as the first and last name you enter, email address, zip code,
+                                        physical address, and any other information you may provide during the account creation process,
+                                        such as a gender, phone number, or birth date. We may publicly display the first name and last
+                                        name that you provide, as well as any photo or other content you submit through the account
+                                        creation process, as part of your account profile. We also store and use any preferences you
+                                        provide to personalize your user experience, including dining and activity preferences. You can
+                                        later modify some of the account information you provide through your account settings. If you
+                                        believe that someone has created an unauthorized account using your personal information, you
+                                        can request its removal by emailing us at <strong>bossingupbiz@gmail.com</strong></p>
+                                    </li>
+
+                                    <li>
+                                        <p><strong>Public Content:</strong> Your contributions to the Service are intended for public consumption and are
+                                            therefore viewable by the public, including your photos, ratings, reviews, tips, lists, and edits to
+                                            business page information. Your account profile (e.g., first name, last initial, city, neighborhood,
+                                            the month and year you created your Bossing Up account, profile photos and list of friends on
+                                            Bossing Up) is also intended for public consumption, as is some of your other activity through the
+                                            Service, like how you vote on other people’s contributions (e.g., useful, funny, cool, helpful, or
+                                            not helpful), which contributions you like, where you check-in (including when friends on Bossing
+                                            Up tag you in their own check-ins), which contributions or users you follow, and which businesses
+                                            you follow or bookmark. You can limit the public nature of some of these activities through your
+                                            account settings.</p>
+                                    </li>
+                                    <li>
+                                        <p><strong>Contacts:</strong> You can invite others to join Bossing Up by providing us with their contact
+                                        information, or by allowing us to access contacts from your computer, mobile device, or third
+                                        party sites to select which individuals you want to invite. If you allow us to access your contacts,
+
+                                        we will transmit information about your contacts to our servers long enough to process your
+                                        invitations.</p>
+                                    </li>
+                                    <li>
+                                        <p><strong>Communications:</strong> When you sign up for an account or use certain features, you are opting to
+                                        receive messages from other users, businesses, and Bossing Up. You can manage some of your
+                                        messaging preferences through your account settings, but note that you cannot opt out of receiving
+                                        certain administrative, transactional, or legal messages from Bossing Up. For example, if you
+                                        order an item or request a quote from a business through the Service, we may send you messages
+                                        about your transaction using the contact information you provide, including through automated
+                                        SMS text messages to your phone number. We may also track your actions in response to the
+                                        messages you receive from us or through the Service, such as whether you deleted, opened, or
+                                        forwarded such messages, and share that information with other parties to your messages (for
+                                        example, to let them know if you have viewed their message). When a user requests a quote or
+                                        similar information from multiple businesses through the Service, we may disclose to those
+                                        businesses information about the status of the user’s requests, such as whether any business has
+                                        responded to the request, the type of response provided (for example, a quote or a request for more
+                                        information), and whether the user has responded to any business’s reply. <strong>If you exchange
+                                        messages with others through the Service, we may store them in order to process and deliver
+                                        them, allow you to manage them, and we may review and disclose them in connection with
+                                        investigations related to use of the Service, as well as our efforts to improve the Service.</strong> We
+                                        may not deliver messages that we believe are objectionable, such as spam messages or fraudulent
+                                        solicitations. If you send or receive messages through the Service via SMS text message, we may
+                                        log phone numbers, phone carriers, and the date and time that the messages were processed.
+                                        Carriers may charge recipients for texts that they receive. We may also store information that you
+                                        provide through communications to us, including from phone calls, letters, emails and other
+                                        electronic messages, or in person. If you are a representative of a business listed on Bossing Up, or
+                                        use a phone number associated now or previously with such a business, we may contact you,
+                                        including by phone or email, using the contact information you provide us, make publicly
+                                        available, or that we have on record for your business. Our communications with you, including
+                                        phone calls, may be monitored and recorded for quality purposes.</p>
+                                    </li>
+
+                                    <li>
+                                        <p><strong>Transactions:</strong> If you initiate a transaction through the Service, such as a purchase, we will collect
+                                        and store information you provide associated with your transaction, such as your name, phone
+                                        number, address, email, and payment information, as well as any other information you provide, in
+                                        order to process your transaction, send communications about the transaction to you, and facilitate
+                                        future transactions. This information may be shared with third parties, and third parties may share
+                                        such information with us, for the same purposes. When you submit credit card numbers and other
+                                        sensitive payment information, that information is encrypted using industry standard technology.
+                                        If you write reviews about businesses with which you transact through the Service, we may
+                                        publicly display the fact that you transacted with those businesses in connection with such
+                                        reviews.</p>
+                                    </li>
+
+                                    <li>
+                                        <p><strong>Activity:</strong> We store information about your use of the Service, such as your search activity, the
+                                        pages you view, the date and time of your visits, businesses you call using our mobile
+                                        applications, and purchases, or transactions you make through the Service. We also store
+                                        information that your computer or mobile device may provide to us in connection with your use of
+                                        the Service, such as your browser type, type of computer or mobile device, browser language, IP
+                                        address, WiFi information such as SSID, mobile carrier, phone number, unique device identifier,
+                                        advertising identifier, location (including geolocation, beacon based location, and GPS location),
+                                        and requested and referring URLs and mobile applications. We may also receive and store your
+                                        location whenever our mobile applications are running, including when running in the
+                                        background, if you enable our mobile apps to access such information in the course of using the
+                                        Service. You may be able to limit or disallow our use of certain location data through your device
+                                        or browser settings, for example by adjusting the settings for our applications in iOS or Android
+                                        privacy settings.</p>
+                                    </li>
+
+                                    <li>
+                                        <p><strong>Different Devices:</strong> You may access the Service through different devices (e.g., your mobile phone
+                                        or personal computer) and the Bossing Up website. The information that we collect and store
+                                        through those different uses may be cross-referenced and combined.</p>
+                                    </li>
+
+                                    <li>
+                                        <p><strong>Professional Information:</strong> If you represent a business on Bossing Up, we may collect and display
+                                        information about you related to your business activities, such as a business name that may
+                                        incorporate your name, or a publicly available business address that is also used as a home
+                                        address. We will also collect and display information about your professional background that you
+                                        choose to share with us through the Service, such as information about your professional licenses
+                                        or certifications, or your professional history or specialties.</p>
+                                    </li>
+
+                                    <li>
+                                        <p><strong>Legal Basis for Processing (European Economic Area (EEA) Only):</strong> For European residents,
+                                        our legal basis for collecting and using the information described above will depend on the
+                                        specific information concerned and the context in which we collect it. We, however, will normally
+                                        collect personal information from you only where we have your consent to do so, where we need
+                                        the personal information to perform a contract with you, or where the processing is in our
+                                        legitimate interests and not overridden by your data protection interests or fundamental rights and
+                                        freedoms. In some cases, we may also have a legal obligation to collect personal information from
+                                        you or may otherwise need the personal information to protect your vital interests or those of
+                                        another person (for instance, to prevent, investigate, or identify possible wrongdoing in connection
+                                        with the Service or to comply with legal obligations). If we ask you to provide personal
+                                        information to comply with a legal requirement or to perform a contract with you, we will make
+                                        this clear at the relevant time and advise you whether the provision of your personal information is
+                                        mandatory or not (as well as of the possible consequences if you do not provide your personal
+                                        information). If we collect and use your personal information in reliance on our legitimate
+                                        interests (or those of any third party), this interest will typically be to operate our Services,
+                                        communicate with you in relation to our Services, or for our other legitimate commercial interests,
+                                        for instance, when responding to your queries, to analyze and improve our platform, engage in
+                                        marketing, or for the purposes of detecting or preventing fraud. If you have questions about or
+                                        need further information concerning the legal basis on which we collect and use your personal
+                                        information, please contact us at the address listed below in the “Contact” section.</p>
+                                    </li>
+                                </ol>
+
+                                <li style="font-size: 2.35714286em; font-weight: 500; padding-top: 5%; color: black;">
+                                    <p>COOKIES</p>
+                                </li>
+                                <p>We, and third parties with whom we partner, may use cookies, web beacons, tags, scripts, local shared
+                                    objects such as HTML5 and Flash (sometimes called “flash cookies”), advertising identifiers
+                                    (including mobile identifiers such as Apple’s Identifier for Advertisers (“IDFA”) or Google’s
+                                    Advertising ID (“GAID”)) and similar technology (“Cookies”) in connection with your use of the
+                                    Service, third party websites, and mobile applications. Cookies may contain unique identifiers, and
+                                    reside, among other places, on your computer or mobile device, in emails we send to you, and on our
+                                    web pages. Cookies may transmit information about you and your use of the Service, such as your
+                                    browser type, search preferences, IP address, data relating to advertisements that have been displayed
+                                    to you or that you have interacted with, and the date and time of your use. Cookies may be persistent or
+                                    stored only during an individual session.</p>
+
+                                <p>The purposes for which we use Cookies in the Service include:</p>
+
+                                <div class="row">
+                                    <div class="col-3">
+                                        <h4 class="text-center"><strong>Purpose</strong></h4>
+                                    </div>
+
+                                    <div class="col-9">
+                                        <h4 class="text-center"><strong>Explanation</strong></h4>
+                                    </div>
+
+                                    <div class="col-3">
+                                        <p>Processes</p>
+                                    </div>
+                                    
+                                    <div class="col-9">
+                                        <p>Intended to make the Service work in the way you expect. For example, we use
+                                            a Cookie that tells us whether you have already signed up for an account.</p>
+                                    </div>
+
+                                    <div class="col-3">
+                                        <p>Authentication,
+                                            Security, and
+                                            Compliance</p>
+                                    </div>
+                                    
+                                    <div class="col-9">
+                                        <p>Intended to prevent fraud, protect your data from unauthorized parties, and
+                                            comply with legal requirements. For example, we use Cookies to determine if
+                                            you are logged in.</p>
+                                    </div>
+
+                                    <div class="col-3">
+                                        <p>Preferences</p>
+                                    </div>
+                                    
+                                    <div class="col-9">
+                                        <p>Intended to remember information about how you prefer the Service to behave
+and look. For example, we use a Cookie that tells us whether you have declined
+to allow us to send push notifications to your phone.</p>
+                                    </div>
+
+                                    <div class="col-3">
+                                        <p>Notifications</p>
+                                    </div>
+                                    
+                                    <div class="col-9">
+                                        <p>Intended to allow or prevent notices of information or options that we think
+could improve your use of the Service. For example, we use a Cookie that stops
+us from showing you the signup notification if you have already seen it.</p>
+                                    </div>
+
+                                    <div class="col-3">
+                                        <p>Advertising</p>
+                                    </div>
+                                    
+                                    <div class="col-9">
+                                        <p>Intended to make advertising more relevant to users and more valuable to
+advertisers. For example, we may use Cookies to serve you interest-based ads,
+such as ads that are displayed to you based on your visits to other websites, or to
+tell us if you have recently interacted with an ad.</p>
+                                    </div>
+
+                                    <div class="col-3">
+                                        <p>Analytics</p>
+                                    </div>
+                                    
+                                    <div class="col-9">
+                                        <p>Intended to help us understand how visitors use the Service. For example, we
+use a Cookie that tells us how our search suggestions correlate to your
+interactions with the search page.</p>
+                                    </div>
+                                    
+                                </div>
+
+                                <p style="margin-top: 12px;">You can set some Cookie preferences through your device or browser settings, but doing so may affect
+the functionality of the Service. The method for disabling Cookies may vary by device and browser,
+but can usually be found in your device or browser preferences or security settings.</p>
+
+
+                                 <li style="font-size: 2.35714286em; font-weight: 500; padding-top: 5%; color: black;">
+                                    <p>THIRD PARTIES</p>
+                                </li>
+
+                                <p>Third parties may receive information about you as follows:</p>
+
+                                <ol>
+                                    <li><strong>Advertisers:</strong> We allow third parties to use Cookies through the Service to collect the same type of
+information for the same purposes as we do. In doing so, we adhere to the Digital Advertising
+Alliance’s Self-Regulatory Principles for Online Behavioral Advertising. Third parties may be
+able to associate the information they collect with other information they have about you from
+other sources. You may be able to opt out of some of these practices by adjusting your browser’s
+security settings. Please note that opting out does not prevent the display of all advertisements to
+you. We may also share some non-identifiable, de-identified or aggregated information from or
+about you, such as location information, with third parties in connection with advertising programs
+and data analytics. You may be able to limit our sharing of some of this information through your
+mobile device settings, as described in Section 2 above, or through the Service’s settings.</li>
+                                    
+                                    <li>Content Partners: We allow third party partners to use and display some of the public content
+available through the Service, such as your photos, reviews, and other information listed under
+“Public Content” in Section 1 above.</li>
+
+                                    <li>Service Providers: We rely on third party service providers to support or provide services for us
+in connection with your use of the Service, such as food delivery services, communications and
+hosting, security and fraud prevention, technical and customer support, tracking and reporting
+usage of the Service, quality assurance testing, payment processing, marketing, and other
+functions. We share information from or about you with these third party providers so that they
+can perform their services or complete your requests. You may be able to limit our access to some
+of this information through your mobile device settings, as described in Section 2 above, or
+through the Service’s settings. Bossing Up’s third party service providers may likewise share
+information with us that they obtain from or about you in connection with providing their services
+or completing your requests.</li>
+                                    <li>Aggregate or Anonymous Information: We share user information in the aggregate with third
+parties, such as businesses that are listed on Bossing Up and content distributors. For example, we
+disclose the number of users that have been exposed to or interacted with advertisements, or that
+we believe visited the physical location of a particular business.</li>
+                                    <li>Business Transfers: If another company acquires Bossing Up, or all or substantially all our
+assets, that company will possess the same information, and will collect, use, and disclose the
+information only as described in this Privacy Policy.</li>
+                                    <li>Businesses on Bossing Up: We may share information from or about you (such as your city, and
+if you provide it, your age and gender), your device type, and your use of the Service (such as
+which businesses you bookmark or call, or if you visit a business’s URL) with businesses on
+Bossing Up. You may adjust your account settings to increase or decrease the amount of
+information we share. Keep in mind that businesses can also view your public activity and posts,
+and may receive information from or about you when you transact or communicate with them,
+through Bossing Up or otherwise, regardless of your settings (see Section 1 above). Additionally,
+if you make a phone call to a business through or in connection with your use of the Service, we
+
+may share information about your call with the business that the business would have received had
+you called them directly, such as the date and time of your call and your phone number. You may
+be able to limit our ability to collect and share your phone number through your phone settings or
+phone service provider.</li>
+                                    <li>Investigations and Legal Disclosures: We may investigate and disclose information from or
+about you if we have a good faith belief that such investigation or disclosure: (a) is reasonably
+necessary to comply with legal or law enforcement processes, such as a search warrant, subpoena,
+statute, judicial proceeding, or other legal process or law enforcement request; (b) is helpful to
+prevent, investigate, or identify possible wrongdoing in connection with the Service; or (c)
+protects our rights, reputation, property, or that of our users, affiliates, or the public. If you flag or
+otherwise complain to us about content through the Service, we may share the substance of your
+complaint with the contributor of that content in order to provide an opportunity for the
+contributor to respond.</li>
+
+                                    <li>Links: The Service may link to third party-controlled websites, like a business’s URL. Except as
+set forth herein, we do not share your personal information with them, and are not responsible for
+their privacy practices.</li>
+
+                                    <li>Third Party Integrations: If you sign up for, or log into, Bossing Up using a third party service
+like Facebook or Google, or link your Bossing Up account to your account with a third party
+service like Facebook, Instagram or Twitter, we may receive information about you from such
+third party service. If you post content to a third party service through the Service, that third party
+service will also receive that content, which will be visible to anyone that has access to it through
+that third party service. Some of our web pages utilize framing techniques to serve content to you
+from our third party partners, while preserving the look and feel of the Service. In such cases,
+please note that the information you provide may be transmitted directly to the identified third
+party partner. If you interact with businesses through Bossing Up, they will receive whatever
+information you choose to share with them, for example contact information you share through
+direct messages to the business or your phone number if you call the business.</li>
+
+                                </ol>
+
+
+                                <li style="font-size: 2.35714286em; font-weight: 500; padding-top: 5%; color: black;">
+                                    <p>CONTROLLING YOUR PERSONAL DATA</p>
+                                </li>
+
+                                <p>Other users may be able to identify you, or associate you with your account, if you include personal
+information in the content you post publicly. You can reduce the risk of being personally identified by
+using the Service pseudonymously, though doing so could detract from the credibility of your
+contributions to the Service. Please also note that the messages you send or receive using the Service
+are only private to the extent that both you and the recipient(s) of your messages keep them private.
+For example, if you send a message to another user, that user may choose to publicly post it. We may
+access, review, and disclose such messages in connection with investigations related to use of the
+Service, as well as our efforts to improve the Service.</p>
+
+                                <li style="font-size: 2.35714286em; font-weight: 500; padding-top: 5%; color: black;">
+                                    <p>DATA RETENTION AND ACCOUNT TERMINATION</p>
+                                </li>
+
+                                <p>If you close your account, we may remove certain public posts from view and/or dissociate them from
+your account profile, but we may retain information about you for the purposes authorized under this
+Privacy Policy unless prohibited by law. For example, we may retain information to prevent,
+investigate, or identify possible wrongdoing in connection with the Service or to comply with legal
+obligations. We may also maintain residual copies of your personal information in our backup systems.
+Please note that businesses cannot remove their business pages, ratings, or reviews by closing their
+accounts.</p>
+    
+                                <li style="font-size: 2.35714286em; font-weight: 500; padding-top: 5%; color: black;">
+                                    <p>CHILDREN</p>
+                                </li>
+
+                                <p>The Service is intended for general audiences and is not directed to children under 13. We do not
+knowingly collect personal information from children under 13. If you become aware that a child has
+provided us with personal information without parental consent, please contact us by emailing us at
+bossingupbiz@gmail.com. If we become aware that a child under 13 has provided us with personal
+information without parental consent, we take steps to remove such information and terminate the
+child’s account.</p>
+
+                                <li style="font-size: 2.35714286em; font-weight: 500; padding-top: 5%; color: black;">
+                                    <p>SECURITY</p>
+                                </li>
+
+                                <p>We use various safeguards to protect the personal information submitted to us, both during
+transmission and after we receive it. However, no method of transmission over the Internet or via
+mobile device, or method of electronic storage, is 100% secure. Therefore, while we strive to use
+commercially acceptable means to protect your personal information, we cannot guarantee its absolute
+security.</p>
+
+                                <li style="font-size: 2.35714286em; font-weight: 500; padding-top: 5%; color: black;">
+                                    <p>CONTACT INFORMATION</p>
+                                </li>
+
+                                <p>You may contact us concerning our Privacy Policy, or write to us at the following address:<br>
+Bossing Up, Attn: Data Privacy<br>
+P.O. Box 470021<br>
+Brooklyn, NY 11247<br>
+For security purposes, we will take such steps as we deem necessary to confirm your identity before
+completing your request or sharing any personal data with you.</p>
+
+
+                                
+                                <li style="font-size: 2.35714286em; font-weight: 500; padding-top: 5%; color: black;">
+                                    <p>MODIFICATIONS TO THIS PRIVACY POLICY</p>
+                                </li>
+
+                                <p>We may revise this Privacy Policy from time to time. The most current version of the Privacy Policy
+will govern our collection, use, and disclosure of information about you. If we make material changes
+to this Privacy Policy, we will notify you by email or by posting a notice on the Service prior to or on
+the effective date of the changes. By continuing to access or use the Service after those changes
+become effective, you acknowledge the revised Privacy Policy.</p>
+
+                                
+                                <li style="font-size: 2.35714286em; font-weight: 500; padding-top: 5%; color: black;">
+                                    <p>CALIFORNIA RESIDENTS: YOUR CALIFORNIA PRIVACY RIGHTS</p>
+                                </li>
+
+                                <p>Under the California Consumer Privacy Act of 2018 (“CCPA”), California residents have certain
+rights around Bossing Up’s collection, use, and sharing of their personal information.
+Bossing Up does not sell your personal information and will not do so in the future without providing
+you with notice and an opportunity to opt-out of such sale as required by law. Similarly, we do not
+offer financial incentives associated with our collection, use, or disclosure of your personal
+information.
+Bossing Up collects various categories of personal information when you use the Service, including
+identifiers, commercial information, internet or other electronic network or device activity information,
+geolocation data, and professional information. A more detailed description of the information Bossing
+Up collects and how we use it is provided above in Section 1 (Information We Collect and How We
+
+Use It). Section 3 (Third Parties) describes the categories of third parties with whom we share personal
+information, and what information may be shared under different circumstances.
+If you are a resident of California, you have the right to request to know what personal information has
+been collected about you, and to access that information. You also have the right to request deletion of
+your personal information, though exceptions under the CCPA may allow Bossing Up to retain and use
+certain personal information notwithstanding your deletion request. You can submit a data rights
+request to Bossing Up by emailing us at bossingubiz@gmail.com. We will not discriminate against
+you for exercising your rights under the CCPA. An agent may submit a request on your behalf, but you
+must verify that your agent is authorized to do so.
+Separate from the CCPA, California’s Shine the Light law gives California residents the right to ask
+companies what personal information they share with third parties for those third parties’ direct
+marketing purposes. We do not disclose your personal information to third parties for the purpose of
+directly marketing their goods or services to you unless you request such disclosure. If you have any
+questions regarding this policy, or would like to change your preferences, you may contact us at the
+address listed above in Section 8.</p>
+                                
+                                <li style="font-size: 2.35714286em; font-weight: 500; padding-top: 5%; color: black;">
+                                    <p>EUROPEAN RESIDENTS: YOUR PRIVACY RIGHTS AND INTERNATIONAL DATA TRANSFER</p>
+                                </li>
+
+                                <p>If you are a European resident, you have the right to access your personal data, and the right to request
+that we correct, update, or delete your personal data. You can object to the processing of your personal
+information, ask us to restrict processing of your personal information, and request portability of your
+personal information. Similarly, if we have collected and processed your personal information with
+your consent, then you can withdraw your consent at any time. Withdrawing your consent will not
+affect the lawfulness of any processing we conducted prior to your withdrawal, nor will it affect
+processing of your personal information conducted in reliance on lawful processing grounds other than
+consent. The Service generally provides you with a reasonable means to view and change your profile
+information and you can opt-out of marketing communications at any time by clicking on the
+“unsubscribe” or “opt-out” link in the marketing emails we send you or in your account settings. If you
+have any questions or comments about the processing of your personal information, you may contact
+us as described in Section 8 above.
+<br>
+For European Residents, please note that the personal information we obtain from or about you may be
+transferred, processed, and stored outside of the EEA for the purposes described in this Privacy Policy,
+including in the United States of America. We take the privacy of our users seriously and therefore
+take steps to safeguard your information, including ensuring an adequate level of data protection in
+accordance with European Unionf standards in effect as of the date of this Privacy Policy. These steps
+include use of the European Commission’s Standard Contractual Clauses for transfers of personal
+information between our group companies, which require all group companies to protect personal
+information they process from the EEA in accordance with European Union data protection laws. We
+have implemented similar appropriate safeguards with our third party service providers and partners
+and further details can be provided upon request.</p>
+
+
+                            </ol>
+                        </div>
+                        
+                    </div>
+                    <!--end of row-->
+                </div>
+                <!--end of container-->
+            </section>
+
+
+
+            <footer style="background-color: #e2e2e2;" class="footer-6 unpad--bottom">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xs-12 col-md-3 col-lg-2 text-center">
+                            <a href="/">
+                                <img class="footer-img-xs" src="{% static 'img/logo2.png' %}">
+                            </a>
+                        </div>
+                        <div class="col-xs-12 col-md-9 col-lg-10 text-center-xs">
+                            <h2 class="text-center-xs" style="color: #4E1E24; font-weight: 500;">Find Dope Busineses in Your Community</h2>
+                            <a style="margin-top:10px; background-color: #ececec; border-color: #4e1e24; border-radius: 30px; font-size: 18px;" class="btn btn--sm btn--primary type--uppercase" href="https://docs.google.com/forms/d/e/1FAIpQLSfdqcO5yc06j48fZdQEo5iFSDjnIk2VL5hYY-a73bPKlTSF4A/viewform?vc=0&c=0&w=1&flr=0" target="_blank">
+                                        <span style="color: #4e1e24;" class="btn__text cstm">
+                                            Feedback
+                                        </span>
+                            </a>
+                            
+                            <a style="margin-top:10px; background-color: #ececec; border-color: #4e1e24; border-radius: 30px; font-size: 18px;" class="btn btn--sm btn--primary type--uppercase" href="https://docs.google.com/forms/d/e/1FAIpQLScpPW5K7gadxnMlMTxAQ1D0tOaLx-p7erCqGXRzyAs3_xwRMg/viewform?vc=0&c=0&w=1&flr=0&usp=mail_form_link" target="_blank">
+                                        <span style="color: #4E1E24;" class="btn__text cstm">
+                                            Add business
+                                        </span>
+                            </a>
+
+                            <div class="row mt--2">
+                                <div class="col-6 col-md-4 col-lg-4 cstm-footer">
+                                    <h6>Company</h6>
+                                    
+                                    <p><a href="#0">About us</a></p>
+                                    <p><a href="#0">Blog</a></p>
+                                    <p><a target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLScNrBzv6UEHi1c7Hj0gNIVF7obiEQnO-kAp9KktkEpabI0SnQ/viewform?vc=0&c=0&w=1&flr=0&gxids=7628">Volunteer</a></p>
+                                    <p><a href="#0">Donate</a></p>
+                                </div>
+                                <div class="col-6 col-md-4 col-lg-4 cstm-footer">
+                                    <h6 class="">Browse</h6>
+
+                                    <p><a href="categories/restaurants">Business listings</a></p>
+                                    <p><a href="https://store.bossingup.net">Store</a></p>
+                                </div>
+
+                                <div class="col-12 col-md-4 col-lg-4 cstm-footer">
+                                    <h6 class="#0">Contact us</h6>
+
+                                    <p><a href="mailto:bossingupbiz@gmail.com">bossingupbiz@gmail.com</a></p>
+                                    
+                                    <ul class="social-list list-inline list--hover">
+                                        <li><a href="https://twitter.com/bossingupbiz?lang=en" target="_blank"><i class="socicon socicon-twitter icon icon--sm"></i></a></li>
+                                        <li><a href="https://www.facebook.com/BossingUpbiz/" target="_blank"><i class="socicon socicon-facebook icon icon--sm"></i></a></li>
+                                        <li><a href="https://www.instagram.com/bossingupbiz/" target="_blank"><i class="socicon socicon-instagram icon icon--sm"></i></a></li>
+                                    </ul>
+                                </div>
+                            </div> 
+                        </div>
+                    </div>
+                    <!--end of row-->
+                </div>
+                <!--end of container-->
+                <div class="footer__lower text-center-xs">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <span class="">&copy;
+                                    <span class="update-year"></span> Bossing Up Inc &mdash; All Rights Reserved</span>
+                            </div>
+
+                            <div class="col-xs-12 col-md-6 text-right">
+                                <a style="padding-right: 12px;" href="/terms_of_use"><i>Terms of use</i></a>
+                                <a href="/privacy_policy"><i>Privacy Policy</i></a>
+                            </div>
+                            
+                        </div>
+                        <!--end of row-->
+                    </div>
+                    <!--end of container-->
+                </div>
+            </footer>
+        </div>
+        <!--<div class="loader"></div>-->
+        <a class="back-to-top inner-link" href="#start" data-scroll-class="100vh:active">
+            <i class="stack-interface stack-up-open-big"></i>
+        </a>
+        <script src="{% static 'js/jquery-3.1.1.min.js' %}"></script>
+        <script src="{% static 'js/flickity.min.js' %}"></script>
+        <script src="{% static 'js/easypiechart.min.js' %}"></script>
+        <script src="{% static 'js/parallax.js' %}"></script>
+        <script src="{% static 'js/typed.min.js' %}"></script>
+        <script src="{% static 'js/datepicker.js' %}"></script>
+        <script src="{% static 'js/isotope.min.js' %}"></script>
+        <script src="{% static 'js/ytplayer.min.js' %}"></script>
+        <script src="{% static 'js/lightbox.min.js' %}"></script>
+        <script src="{% static 'js/granim.min.js' %}"></script>
+        <script src="{% static 'js/jquery.steps.min.js' %}"></script>
+        <script src="{% static 'js/countdown.min.js' %}"></script>
+        <script src="{% static 'js/twitterfetcher.min.js' %}"></script>
+        <script src="{% static 'js/spectragram.min.js' %}"></script>
+        <script src="{% static 'js/smooth-scroll.min.js' %}"></script>
+        
+        <script src="{% static 'js/maps.js' %}"></script>
+        <script> (function() { var qs,js,q,s,d=document, gi=d.getElementById, ce=d.createElement, gt=d.getElementsByTagName, id="typef_orm_share", b="https://embed.typeform.com/"; if(!gi.call(d,id)){ js=ce.call(d,"script"); js.id=id; js.src=b+"embed.js"; q=gt.call(d,"script")[0]; q.parentNode.insertBefore(js,q) } })() </script>
+        <script src="{% static 'js/scripts.js' %}"></script>
+        
+    </body>
+</html>
